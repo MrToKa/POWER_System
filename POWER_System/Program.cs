@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using POWER_System.Data;
+using POWER_System.Data.Repositories;
+using POWER_System.Models;
+using POWER_System.Services;
+using POWER_System.Services.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +18,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IApplicationDbRepository, ApplicationDbRepository>()
+    .AddScoped<IProjectService, ProjectService>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using POWER_System.Data;
 using System;
 
-namespace POWER_System.Data.Migrations
+namespace POWER_System.Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]

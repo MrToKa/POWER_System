@@ -8,7 +8,7 @@ using POWER_System.Data;
 
 #nullable disable
 
-namespace POWER_System.Data.Migrations
+namespace POWER_System.Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot

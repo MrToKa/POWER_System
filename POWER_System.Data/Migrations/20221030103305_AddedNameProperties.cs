@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace POWER_System.Data.Migrations
+namespace POWER_System.Models.Migrations
 {
     public partial class AddedNameProperties : Migration
     {

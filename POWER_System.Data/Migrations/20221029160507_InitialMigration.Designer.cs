@@ -9,7 +9,7 @@ using POWER_System.Data;
 
 #nullable disable
 
-namespace POWER_System.Data.Migrations
+namespace POWER_System.Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20221029160507_InitialMigration")]

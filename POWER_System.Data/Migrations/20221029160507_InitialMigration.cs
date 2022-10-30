@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace POWER_System.Data.Migrations
+namespace POWER_System.Models.Migrations
 {
     public partial class InitialMigration : Migration
     {

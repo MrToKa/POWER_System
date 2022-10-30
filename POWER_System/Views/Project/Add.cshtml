@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using POWER_System.Models.Enum
+@model POWER_System.Services.Models.ProjectServiceModel
+
+@{
+    ViewBag.Title = "Add Project";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="@Model.Number" class="form-label">Project Number</label>
+                <input asp-for="@Model.Number" class="form-control" ariarequired="true" />
+                <span asp-validation-for="Number" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.Name" class="formlabel">Project Name</label>
+                <input asp-for="@Model.Name" class="form-control" ariarequired="true" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.Contractor" class="form-label">Contractor</label>
+                <input asp-for="@Model.Contractor" class="form-control" ariarequired="true" />
+                <span asp-validation-for="Contractor" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.Description" class="form-label">Description</label>
+                <input asp-for="@Model.Description" class="form-control" value="" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.Status">Current Project Status</label>
+                <select class="form-select" aria-label="status" asp-for="Status" asp-items="@Html.GetEnumSelectList<ProjectStatus>()">
+                </select>
+                <span asp-validation-for="@Model.Status" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-primary" type="submit" value="Add" />
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

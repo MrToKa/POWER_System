@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using POWER_System.Data;
+using POWER_System.Models;
 using POWER_System.Models.ApplicationUserModels;
 
 namespace POWER_System.Controllers;
