@@ -14,12 +14,18 @@ public class ApplicationUser : IdentityUser
         this.Claims = new HashSet<IdentityUserClaim<string>>();
         this.Logins = new HashSet<IdentityUserLogin<string>>();
     }
+    
+    [Required]
+    public string FirstName { get; set; }
+
+    [Required]
+    public string LastName { get; set; }
 
     /// <summary>
     /// Gets or sets the office location of the user. It is a list of current company offices. If a freelancer needs an application account, he is given the role of "Freelancer".
     /// </summary>
     [Required]
-    public Offices OfficeLocation { get; set; }
+    public string OfficeLocation { get; set; }
 
     /// <summary>
     /// Gets or sets the department of the user.

@@ -42,7 +42,13 @@ public class ApplicationUserController : Controller
         var user = new ApplicationUser()
         {
             Email = model.Email,
-            UserName = model.UserName
+            UserName = model.Username,
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            OfficeLocation = model.OfficeLocation,
+            Department = model.Department,
+            Position = model.Position,
+            CreatedOn = DateTime.Now,
         };
 
         var result = await userManager.CreateAsync(user, model.Password);
