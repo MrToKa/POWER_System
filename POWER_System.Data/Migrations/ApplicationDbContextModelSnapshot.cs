@@ -34,7 +34,7 @@ namespace POWER_System.Data.Migrations
 
                     b.HasIndex("PartsId");
 
-                    b.ToTable("EnclosurePart");
+                    b.ToTable("EnclosurePart", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -236,7 +236,7 @@ namespace POWER_System.Data.Migrations
 
                     b.HasIndex("SiteServiceId");
 
-                    b.ToTable("Parts");
+                    b.ToTable("Parts", (string)null);
                 });
 
             modelBuilder.Entity("PartStorage", b =>
@@ -251,7 +251,7 @@ namespace POWER_System.Data.Migrations
 
                     b.HasIndex("StorageId");
 
-                    b.ToTable("PartStorage");
+                    b.ToTable("PartStorage", (string)null);
                 });
 
             modelBuilder.Entity("POWER_System.Data.ApplicationUser", b =>
@@ -446,7 +446,7 @@ namespace POWER_System.Data.Migrations
 
                     b.HasIndex("StorageId");
 
-                    b.ToTable("Cables");
+                    b.ToTable("Cables", (string)null);
                 });
 
             modelBuilder.Entity("POWER_System.Data.CableOrder", b =>
@@ -489,7 +489,7 @@ namespace POWER_System.Data.Migrations
 
                     b.HasIndex("StorageId");
 
-                    b.ToTable("CablesOrders");
+                    b.ToTable("CablesOrders", (string)null);
                 });
 
             modelBuilder.Entity("POWER_System.Data.Enclosure", b =>
@@ -526,7 +526,7 @@ namespace POWER_System.Data.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Enclosure");
+                    b.ToTable("Enclosure", (string)null);
                 });
 
             modelBuilder.Entity("POWER_System.Data.Equipment", b =>
@@ -559,7 +559,7 @@ namespace POWER_System.Data.Migrations
 
                     b.HasIndex("StorageId");
 
-                    b.ToTable("Equipment");
+                    b.ToTable("Equipment", (string)null);
                 });
 
             modelBuilder.Entity("POWER_System.Data.PartOrder", b =>
@@ -596,7 +596,7 @@ namespace POWER_System.Data.Migrations
 
                     b.HasIndex("StorageId");
 
-                    b.ToTable("PartsOrders");
+                    b.ToTable("PartsOrders", (string)null);
                 });
 
             modelBuilder.Entity("POWER_System.Data.Project", b =>
@@ -634,7 +634,7 @@ namespace POWER_System.Data.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("POWER_System.Data.SiteService", b =>
@@ -665,7 +665,7 @@ namespace POWER_System.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SiteServices");
+                    b.ToTable("SiteServices", (string)null);
                 });
 
             modelBuilder.Entity("POWER_System.Data.Storage", b =>
@@ -691,7 +691,7 @@ namespace POWER_System.Data.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Storages");
+                    b.ToTable("Storages", (string)null);
                 });
 
             modelBuilder.Entity("ProjectSiteService", b =>
@@ -706,7 +706,7 @@ namespace POWER_System.Data.Migrations
 
                     b.HasIndex("SiteServicesId");
 
-                    b.ToTable("ProjectSiteService");
+                    b.ToTable("ProjectSiteService", (string)null);
                 });
 
             modelBuilder.Entity("EnclosurePart", b =>

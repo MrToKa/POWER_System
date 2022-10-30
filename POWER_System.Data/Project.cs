@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using POWER_System.Data.Constants;
+using POWER_System.Data.Enum;
 
 namespace POWER_System.Data
 {
@@ -51,7 +52,7 @@ namespace POWER_System.Data
         /// Gets or sets the current design phase of the project. It is a preset enumeration and the phase can be - Request, Basic engineering, Detailed engineering, Erection, Commissioning, Finished.
         /// </summary>
         [Required]
-        public int Status { get; set; }
+        public ProjectStatus Status { get; set; }
 
         // TODO: Implement documentation class for the project.
         public virtual IEnumerable<Enclosure> Enclosures { get; set; }

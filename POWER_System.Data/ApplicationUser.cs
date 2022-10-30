@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using POWER_System.Data.Constants;
 using System.ComponentModel.DataAnnotations;
+using POWER_System.Data.Enum;
 
 namespace POWER_System.Data;
 
@@ -18,7 +19,7 @@ public class ApplicationUser : IdentityUser
     /// Gets or sets the office location of the user. It is a list of current company offices. If a freelancer needs an application account, he is given the role of "Freelancer".
     /// </summary>
     [Required]
-    public int OfficeLocation { get; set; }
+    public Offices OfficeLocation { get; set; }
 
     /// <summary>
     /// Gets or sets the department of the user.

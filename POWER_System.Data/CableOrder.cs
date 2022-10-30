@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using POWER_System.Data.Constants;
 using POWER_System.Data.Contracts;
+using POWER_System.Data.Enum;
 
 namespace POWER_System.Data;
 
@@ -43,7 +44,7 @@ public class CableOrder : IOrder
     /// Gets or sets the current status of the order. Preset enumeration - In review, ordered, delivered.
     /// </summary>
     [Required]
-    public int Status { get; set; }
+    public OrderStatus Status { get; set; }
 
     /// <summary>
     /// Gets or sets any comments about the order like delivery time and so on.

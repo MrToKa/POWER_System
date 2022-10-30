@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using POWER_System.Data.Constants;
+using POWER_System.Data.Enum;
 
 namespace POWER_System.Data;
 public class Enclosure
@@ -35,7 +36,7 @@ public class Enclosure
     /// Gets or sets the current phase of the enclosure. It is a preset enumeration and the phase can be - Design, Manufacturing, In warehouse , Delivered, Mounted.
     /// </summary>
     [Required]
-    public int Status { get; set; }
+    public EnclosureStatus Status { get; set; }
 
     /// <summary>
     /// Gets or sets the current revision of the drawing.

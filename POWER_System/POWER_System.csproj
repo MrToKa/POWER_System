@@ -19,4 +19,9 @@
     <ProjectReference Include="..\POWER_System.Data\POWER_System.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\ApplicationUserModels\" />
+    <Folder Include="Views\ApplicationUser\" />
+  </ItemGroup>
+
 </Project>

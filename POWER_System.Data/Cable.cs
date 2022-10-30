@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using POWER_System.Data.Constants;
+using POWER_System.Data.Enum;
 
 namespace POWER_System.Data;
 
@@ -127,5 +128,5 @@ public class Cable
     /// <summary>
     /// Gets or sets the current status of the cable. It is a preset enumeration and the status can be - Waiting for delivery, Not pulled, Pulled, Connected, Tested.
     /// </summary>
-    public int Status { get; set; }
+    public CableStatus Status { get; set; }
 }
