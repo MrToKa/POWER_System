@@ -6,7 +6,18 @@
     ViewBag.Title = "Add Project";
 }
 
-<h2 class="text-center">@ViewBag.Title</h2>
+<h2 class="text-center">@ViewBag.Title automatically from file</h2>
+
+<div class="input-group">
+    <form method="post">
+        <div class="input-group">
+            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+            <button class="btn btn-outline-secondary" id="inputGroupFileAddon04" type="submit" value="Add">Add</button>
+        </div>
+    </form>
+</div>
+
+<h2 class="text-center">@ViewBag.Title manually</h2>
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">

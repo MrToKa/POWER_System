@@ -24,7 +24,7 @@ builder.Services.AddScoped<IApplicationDbRepository, ApplicationDbRepository>()
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/User/Login";
+    options.LoginPath = "/ApplicationUser/Login";
 });
 
 var app = builder.Build();
@@ -33,6 +33,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+    app.UseDeveloperExceptionPage();
 }
 else
 {

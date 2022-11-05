@@ -16,6 +16,11 @@ public class ProjectService : IProjectService
         this.repo = _repo;
     }
 
+    public Task AddFromFileAsync(ProjectServiceModel model, string file)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task AddProjectAsync(ProjectServiceModel model)
     {
         ProjectStatus currentStatus;

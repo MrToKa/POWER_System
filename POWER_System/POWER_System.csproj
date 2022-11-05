@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\POWER_System.Data\POWER_System.Data.csproj" />
     <ProjectReference Include="..\POWER_System.Services\POWER_System.Services.csproj" />
   </ItemGroup>
 
