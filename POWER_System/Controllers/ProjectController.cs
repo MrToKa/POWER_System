@@ -25,7 +25,7 @@ public class ProjectController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Add()
+    public IActionResult Add()
     {
         var model = new ProjectServiceModel();
 
@@ -49,6 +49,14 @@ public class ProjectController : BaseController
         {
             ModelState.AddModelError("", "Something went wrong");
         }
+
+        return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(Guid id)
+    {
+        var model = await projectService.GetProjectAsync(id);
 
         return View(model);
     }

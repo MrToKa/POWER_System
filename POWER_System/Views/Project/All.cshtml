@@ -12,6 +12,7 @@
                 <th scope="col">Project Name</th>
                 <th scope="col">Project Contractor</th>
                 <th scope="col">Project Status</th>
+                <th scope="col">Details</th>
             </tr>
         </thead>
         @foreach (var project in Model)
@@ -21,7 +22,14 @@
                     <td>@project.Number</td>
                     <td>@project.Name</td>
                     <td>@project.Contractor</td>
-                    <td>@project.Status</td>
+                    <td>
+                        <label>@project.Status</label>
+                    </td>
+                    <td>
+                        <form>
+                            <button class="btn btn-success" asp-action="Details" asp-controller="Project" asp-route-id="@project.Id" type="submit">Detailed information</button>
+                        </form>
+                    </td>
                 </tr>
             </tbody>
         }

@@ -11,14 +11,10 @@ public class ProjectService : IProjectService
 {
     private readonly IApplicationDbRepository repo;
 
+
     public ProjectService(IApplicationDbRepository _repo)
     {
         this.repo = _repo;
-    }
-
-    public Task AddFromFileAsync(ProjectServiceModel model, string file)
-    {
-        throw new NotImplementedException();
     }
 
     public async Task AddProjectAsync(ProjectServiceModel model)
@@ -54,8 +50,18 @@ public class ProjectService : IProjectService
         });
     }
 
-    public Task<ProjectServiceModel> GetProjectAsync(string projectName)
+    public async Task<ProjectServiceModel> GetProjectAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var project = await repo.GetByIdAsync<Project>(id);
+
+        return new ProjectServiceModel()
+        {
+            Id = project.Id,
+            Number = project.Number,
+            Contractor = project.Contractor,
+            Description = project.Description,
+            Name = project.Name,
+            Status = project.Status.ToString()
+        };
     }
 }

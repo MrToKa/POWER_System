@@ -4,11 +4,9 @@ namespace POWER_System.Services.Contracts;
 
 public interface IProjectService
 {
-    Task<ProjectServiceModel> GetProjectAsync(string projectName);
+    Task<ProjectServiceModel> GetProjectAsync(Guid id);
 
     Task<IEnumerable<ProjectServiceModel>> GetAllProjectsAsync();
 
     Task AddProjectAsync(ProjectServiceModel model);
-
-    Task AddFromFileAsync(ProjectServiceModel model, string file);
 }
