@@ -10,11 +10,13 @@ namespace POWER_System.Services;
 public class ProjectService : IProjectService
 {
     private readonly IApplicationDbRepository repo;
+    private readonly IEnclosureService enclosureService;
 
-
-    public ProjectService(IApplicationDbRepository _repo)
+    public ProjectService(IApplicationDbRepository _repo, 
+        IEnclosureService _enclosureService)
     {
         this.repo = _repo;
+        this.enclosureService = _enclosureService;
     }
 
     public async Task AddProjectAsync(ProjectServiceModel model)
@@ -52,7 +54,14 @@ public class ProjectService : IProjectService
 
     public async Task<ProjectServiceModel> GetProjectAsync(Guid id)
     {
-        var project = await repo.GetByIdAsync<Project>(id);
+        //var project = await repo.GetByIdAsync<Project>(id);
+
+        var project = await repo.All<Project>()
+            .Include(e => e.Enclosures)
+            .Where(x => x.Id == id)
+            .FirstOrDefaultAsync();
+
+        var enclosures = await enclosureService.GetAllEnclosuresForProjectAsync(id);
 
         return new ProjectServiceModel()
         {
@@ -61,7 +70,8 @@ public class ProjectService : IProjectService
             Contractor = project.Contractor,
             Description = project.Description,
             Name = project.Name,
-            Status = project.Status.ToString()
+            Status = project.Status.ToString(),
+            Enclosures = (List<EnclosureServiceModel>)enclosures,
         };
     }
 }

@@ -20,7 +20,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IApplicationDbRepository, ApplicationDbRepository>()
-    .AddScoped<IProjectService, ProjectService>();
+    .AddScoped<IProjectService, ProjectService>()
+    .AddScoped<IEnclosureService, EnclosureService>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

@@ -9,7 +9,7 @@ public class Enclosure
     public Enclosure()
     {
         Parts = new List<Part>();
-        Cables = new HashSet<Cable>();
+        Cables = new List<Cable>();
         CablesOrders = new List<CableOrder>();
     }
 

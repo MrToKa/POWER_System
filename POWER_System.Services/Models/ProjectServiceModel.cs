@@ -1,10 +1,12 @@
-﻿using POWER_System.Models.Enum;
-using POWER_System.Models;
-
-namespace POWER_System.Services.Models;
+﻿namespace POWER_System.Services.Models;
 
 public class ProjectServiceModel
 {
+    public ProjectServiceModel()
+    {
+        Enclosures = new List<EnclosureServiceModel>();
+    }
+
     public Guid Id { get; set; }
 
     public string Number { get; set; } = null!;
@@ -17,7 +19,7 @@ public class ProjectServiceModel
 
     public string Status { get; set; } = null!;
 
-    //public virtual IEnumerable<EnclosureServiceModel> Enclosures { get; set; }
+    public virtual List<EnclosureServiceModel>? Enclosures { get; set; }
 
     //public virtual IEnumerable<StorageServiceModel> Storages { get; set; }
 

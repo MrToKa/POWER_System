@@ -13,9 +13,9 @@ namespace POWER_System.Models
     {
         public Project()
         {
-            Enclosures = new HashSet<Enclosure>();
-            Storages = new HashSet<Storage>();
-            SiteServices = new HashSet<SiteService>();
+            Enclosures = new List<Enclosure>();
+            Storages = new List<Storage>();
+            SiteServices = new List<SiteService>();
         }
 
         public Guid Id { get; set; }
@@ -55,10 +55,10 @@ namespace POWER_System.Models
         public ProjectStatus Status { get; set; }
 
         // TODO: Implement documentation class for the project.
-        public virtual IEnumerable<Enclosure> Enclosures { get; set; }
+        public virtual List<Enclosure> Enclosures { get; set; }
 
-        public virtual IEnumerable<Storage> Storages { get; set; }
+        public virtual List<Storage> Storages { get; set; }
 
-        public virtual IEnumerable<SiteService> SiteServices { get; set; }
+        public virtual List<SiteService> SiteServices { get; set; }
     }
 }

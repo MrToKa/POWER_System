@@ -49,6 +49,13 @@ namespace POWER_System.Data
                 entity.Property(p => p.Price)
                     .HasColumnType("decimal(10,2)"));
 
+            builder.Entity<Project>(entity =>
+            {
+                entity.HasMany(e => e.Enclosures)
+                .WithOne(p => p.Project);
+            });
+
+
             base.OnModelCreating(builder);
         }
     }
