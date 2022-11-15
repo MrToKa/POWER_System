@@ -44,9 +44,7 @@
                 <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="@Model.ProjectId" class="form-label">@Context.GetRouteData().Values["id"]</label>
-                <input asp-for="@Model.ProjectId" class="form-control" value="@Context.GetRouteData().Values["id"]" />
-                <span asp-validation-for="ProjectId" class="text-danger"></span>
+                <input type="hidden" asp-for="@Model.ProjectId" class="form-control" value="@Context.GetRouteData().Values["id"]" />
             </div>
             <div class="mb-3">
                 <input class="btn btn-primary" type="submit" value="Add Enclosure/Cabinet" />

@@ -12,7 +12,7 @@ public class ProjectService : IProjectService
     private readonly IApplicationDbRepository repo;
     private readonly IEnclosureService enclosureService;
 
-    public ProjectService(IApplicationDbRepository _repo, 
+    public ProjectService(IApplicationDbRepository _repo,
         IEnclosureService _enclosureService)
     {
         this.repo = _repo;
@@ -73,5 +73,35 @@ public class ProjectService : IProjectService
             Status = project.Status.ToString(),
             Enclosures = (List<EnclosureServiceModel>)enclosures,
         };
+    }
+
+    public async Task<IEnumerable<ProjectServiceModel>> SearchProjectAsync(string keyword)
+    {
+            var projects = await repo.All<Project>()
+                .ToListAsync();
+
+        if (!String.IsNullOrEmpty(keyword))
+        {
+            projects = projects.Where(p => p.Name.ToLower().Contains(keyword.ToLower())).ToList();
+        }
+
+        var projectCollection = new List<ProjectServiceModel>();
+
+        foreach (var project in projects)
+        {
+            var filteredProject = new ProjectServiceModel
+            {
+                Contractor = project.Contractor,
+                Status = project.Status.ToString(),
+                Description = project.Description,
+                Id = project.Id,
+                Number = project.Number,
+                Name = project.Name,
+            };
+
+            projectCollection.Add(filteredProject);
+        }
+
+        return projectCollection;
     }
 }

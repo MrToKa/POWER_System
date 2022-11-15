@@ -60,4 +60,17 @@ public class ProjectController : BaseController
 
         return View(model);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> SearchResult(string keyword)
+    {
+        var model = await projectService.SearchProjectAsync(keyword);
+
+        if (model.Any())
+        {
+            return View("All", model);
+        }
+
+        return RedirectToAction(nameof(All));
+    }
 }

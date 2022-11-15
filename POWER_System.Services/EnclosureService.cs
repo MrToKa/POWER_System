@@ -21,7 +21,7 @@ namespace POWER_System.Services
 
         public async Task AddProjectEnclosureAsync(EnclosureServiceModel model)
         {
-            EnclosureStatus currentStatus;
+            //EnclosureStatus currentStatus;
             //Enum.TryParse(model.Status, out currentStatus);
 
             //var project = await repo.GetByIdAsync<Project>(model.ProjectId);

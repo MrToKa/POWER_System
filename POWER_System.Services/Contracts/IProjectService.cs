@@ -9,4 +9,6 @@ public interface IProjectService
     Task<IEnumerable<ProjectServiceModel>> GetAllProjectsAsync();
 
     Task AddProjectAsync(ProjectServiceModel model);
+
+    Task<IEnumerable<ProjectServiceModel>> SearchProjectAsync(string keyword);
 }
