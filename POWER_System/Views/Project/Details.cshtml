@@ -17,14 +17,18 @@
             Cabinets/Enclosures:<br />
             @if (Model.Enclosures?.Count() == 0)
             {
-                <text>No enclosures/cabinets for this project</text>                
+                <text>No enclosures/cabinets for this project</text>
             }
             else
             {
-                @foreach (var enclosure in Model.Enclosures)
-                {                    
-                    @enclosure.Tag<br />
-                }
+                <div class="list-group">
+                    @foreach (var enclosure in Model.Enclosures)
+                    {
+                        <form>
+                            <button type="submit" class="list-group-item list-group-item-action" asp-action="Details" asp-controller="Enclosure" asp-route-id="@enclosure.Id">@enclosure.Tag</button>
+                        </form>
+                    }
+                </div>
             }
         </div>
         <div class="col">

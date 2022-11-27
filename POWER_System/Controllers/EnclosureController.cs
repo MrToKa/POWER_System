@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using POWER_System.Services;
 using POWER_System.Services.Contracts;
 using POWER_System.Services.Models;
 
@@ -38,6 +39,14 @@ namespace POWER_System.Controllers
             {
                 ModelState.AddModelError("", "Something went wrong");
             }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var model = await enclosureService.EnclosureDetails(id);
 
             return View(model);
         }

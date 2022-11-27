@@ -25,4 +25,11 @@
     <Folder Include="Views\ApplicationUser\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Enclosure\Details.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

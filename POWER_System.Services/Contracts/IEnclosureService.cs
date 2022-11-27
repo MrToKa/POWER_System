@@ -6,6 +6,10 @@ namespace POWER_System.Services.Contracts
     {
         Task AddProjectEnclosureAsync(EnclosureServiceModel model);
 
-        Task<IEnumerable<EnclosureServiceModel>> GetAllEnclosuresForProjectAsync(Guid id);
+        Task<IEnumerable<EnclosureServiceModel>> GetAllEnclosuresForProjectAsync(Guid projectId);
+
+        Task<EnclosureServiceModel> EnclosureDetails(Guid enclosureId);
+
+        //Task<EnclosureServiceModel> AddPartsToEnclosure(IEnumerable<PartServiceModel> model);
     }
 }

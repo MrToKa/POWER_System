@@ -13,10 +13,11 @@ public class ProjectService : IProjectService
     private readonly IEnclosureService enclosureService;
 
     public ProjectService(IApplicationDbRepository _repo,
-        IEnclosureService _enclosureService)
+        IEnclosureService _enclosureService
+        )
     {
-        this.repo = _repo;
-        this.enclosureService = _enclosureService;
+        repo = _repo;
+        enclosureService = _enclosureService;
     }
 
     public async Task AddProjectAsync(ProjectServiceModel model)
@@ -54,14 +55,12 @@ public class ProjectService : IProjectService
 
     public async Task<ProjectServiceModel> GetProjectAsync(Guid id)
     {
-        //var project = await repo.GetByIdAsync<Project>(id);
-
         var project = await repo.All<Project>()
             .Include(e => e.Enclosures)
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync();
 
-        var enclosures = await enclosureService.GetAllEnclosuresForProjectAsync(id);
+            var enclosures = await enclosureService.GetAllEnclosuresForProjectAsync(id);
 
         return new ProjectServiceModel()
         {

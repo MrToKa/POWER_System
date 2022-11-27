@@ -5,6 +5,11 @@ namespace POWER_System.Services.Models
 {
     public class EnclosureServiceModel
     {
+        public EnclosureServiceModel()
+        {
+            this.Parts = new List<PartServiceModel>();
+        }
+
         public Guid Id { get; set; }
 
         public string? Plant { get; set; }
@@ -21,7 +26,7 @@ namespace POWER_System.Services.Models
 
         public Guid ProjectId { get; set; }
 
-        //public virtual IEnumerable<PartServiceModel> Parts { get; set; }
+        public virtual IEnumerable<PartServiceModel>? Parts { get; set; }
 
         //public virtual IEnumerable<CableServiceModel> Cables { get; set; }
 

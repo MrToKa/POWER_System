@@ -2,30 +2,26 @@
 using POWER_System.Data;
 using POWER_System.Data.Repositories;
 using POWER_System.Models;
-using POWER_System.Models.Enum;
 using POWER_System.Services.Contracts;
 using POWER_System.Services.Models;
-using System.Security.Cryptography.X509Certificates;
 
 namespace POWER_System.Services
 {
     public class EnclosureService : IEnclosureService
     {
         private readonly IApplicationDbRepository repo;
-        private readonly ApplicationDbContext context;
+        //private readonly IPartService partService;
 
-        public EnclosureService(IApplicationDbRepository _repo)
+        public EnclosureService(IApplicationDbRepository _repo
+            //IPartService _partService
+            )
         {
-            this.repo = _repo;
+            repo = _repo;
+            //partService = _partService;
         }
 
         public async Task AddProjectEnclosureAsync(EnclosureServiceModel model)
         {
-            //EnclosureStatus currentStatus;
-            //Enum.TryParse(model.Status, out currentStatus);
-
-            //var project = await repo.GetByIdAsync<Project>(model.ProjectId);
-
             var project = await repo.All<Project>()
                 .Include(e => e.Enclosures)
                 .Where(x => x.Id == model.ProjectId)
@@ -47,21 +43,45 @@ namespace POWER_System.Services
             await repo.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<EnclosureServiceModel>> GetAllEnclosuresForProjectAsync(Guid id)
+        public async Task<IEnumerable<EnclosureServiceModel>> GetAllEnclosuresForProjectAsync(Guid projectId)
         {
-            var enclosures = await repo.All<Enclosure>().ToListAsync();
-
-            return enclosures.Where(x => x.ProjectId == id)
+            return await repo.All<Enclosure>()
+                .Where(x => x.ProjectId == projectId)
                 .Select(p => new EnclosureServiceModel
                 {
+                    Id = p.Id,
                     Plant = p.Plant,
                     Location = p.Location,
                     Tag = p.Tag,
                     Status = p.Status,
                     Revision = p.Revision,
                     Comment = p.Comment,
-                    ProjectId = p.Id,
-                }).ToList();
+                    ProjectId = p.Id
+                }).ToListAsync();
         }
+
+
+        public async Task<EnclosureServiceModel> EnclosureDetails(Guid enclosureId)
+        {
+            var enclosure = await repo.All<Enclosure>().FirstOrDefaultAsync(e => e.Id == enclosureId);
+
+            //var parts = await partService.GetAllPartsForEnclosuresAsync(enclosureId);
+
+            var specificEnclosure = new EnclosureServiceModel()
+            {
+                Id = enclosure.Id,
+                Plant = enclosure.Plant,
+                Location = enclosure.Location,
+                Tag = enclosure.Tag,
+                Status = enclosure.Status,
+                Revision = enclosure.Revision,
+                Comment = enclosure.Comment,
+                //ProjectId = enclosure.Id,
+                //Parts = parts
+            };
+
+            return specificEnclosure;
+        }
+
     }
 }

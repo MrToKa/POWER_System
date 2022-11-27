@@ -1,0 +1,55 @@
+﻿@model EnclosureServiceModel
+
+@{
+    ViewBag.Title = $"Enclosure {Model.Tag} Details";
+}
+
+<div class="container text-center">
+    <div class="row align-items-start">
+        <div class="col">
+            <form>
+                <button class="btn btn-primary" asp-action="" asp-controller="" asp-route-id="" type="submit">Button</button><br />
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row text-center">
+    <h2> @Model.Tag - Details:</h2>
+</div>
+
+
+
+@*<div class="container text-center">
+            <div class="row align-items-start">
+            <div class="col">
+            <form>
+            <button class="btn btn-primary" asp-action="Add" asp-controller="Enclosure" asp-route-id="@Model.Id" type="submit">Add new cabinet/enclosure</button><br />
+            </form>
+            Cabinets/Enclosures:<br />
+            @if (Model.Enclosures?.Count() == 0)
+            {
+            <text>No enclosures/cabinets for this project</text>
+            }
+            else
+            {
+            @foreach (var enclosure in Model.Enclosures)
+            {
+            @enclosure.Tag<br />
+            }
+            }
+            </div>
+            <div class="col">
+            <button type="button" class="btn btn-primary">Add additional order</button><br />
+            Orders:
+            </div>
+            <div class="col">
+            <button type="button" class="btn btn-primary">Add new storage location</button><br />
+            Storages:
+            </div>
+            <div class="col">
+            <button type="button" class="btn btn-primary">Add new task</button><br />
+            Site jobs:
+            </div>
+            </div>
+            </div>*@

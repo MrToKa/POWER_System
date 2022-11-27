@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using POWER_System.Models;
 using POWER_System.Models.Constants;
+using POWER_System.Models.Enum;
 
 public class Part
 {
@@ -55,7 +56,7 @@ public class Part
     /// Gets or sets the scope of the delivery of the part.
     /// </summary>
     [Required]
-    public int Delivery { get; set; }
+    public OrderDelivery Delivery { get; set; }
 
     public virtual IEnumerable<Enclosure> Enclosure { get; set; }
 
