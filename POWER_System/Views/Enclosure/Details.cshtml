@@ -34,36 +34,4 @@
     </div>
 </div>
 
-<div class="container text-center">
-    <div class="row align-items-start">
-        <div class="col">
-            Enclosure parts:<br />
-            @if (Model.Parts?.Count() == 0)
-            {
-                <text>No enclosures/cabinets for this project</text>
-            }
-            else
-            {
-                @foreach (var part in Model.Parts)
-                {
-                    <div class="container text-center">
-                        <div class="row align-items-start">
-                            <div class="col">
-                                @part.DeviceTag
-                            </div>
-                            <div class="col">
-                                @part.Manufacturer
-                            </div>
-                            <div class="col">
-                                @part.OrderNumber
-                            </div>
-                            <div class="col">
-                                @part.Description
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-        </div>
-    </div>
-</div>
+<partial name="_PartsTable" />
