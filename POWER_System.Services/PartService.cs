@@ -58,13 +58,16 @@ public class PartService : IPartService
             var databasePart = await repo.All<Part>()
                 .FirstOrDefaultAsync(n => n.OrderNumber == part.OrderNumber);
 
-            assignedParts.Add(databasePart);
+            if (assignedParts.Contains(databasePart))
+            {
+                databasePart.Quantity += 1;
+            }
 
+            assignedParts.Add(databasePart);
         }
 
         enclosure.Parts = assignedParts;
 
-        //await repo.AddAsync(assignedParts);
         await repo.SaveChangesAsync();
 
     }
