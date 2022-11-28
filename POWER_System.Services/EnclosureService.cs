@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using POWER_System.Data;
 using POWER_System.Data.Repositories;
 using POWER_System.Models;
@@ -10,14 +11,15 @@ namespace POWER_System.Services
     public class EnclosureService : IEnclosureService
     {
         private readonly IApplicationDbRepository repo;
-        //private readonly IPartService partService;
 
-        public EnclosureService(IApplicationDbRepository _repo
-            //IPartService _partService
+        private readonly IPartService partService;
+
+        public EnclosureService(IApplicationDbRepository _repo,
+            IPartService _partService
             )
         {
             repo = _repo;
-            //partService = _partService;
+            partService = _partService;
         }
 
         public async Task AddProjectEnclosureAsync(EnclosureServiceModel model)
@@ -63,9 +65,11 @@ namespace POWER_System.Services
 
         public async Task<EnclosureServiceModel> EnclosureDetails(Guid enclosureId)
         {
-            var enclosure = await repo.All<Enclosure>().FirstOrDefaultAsync(e => e.Id == enclosureId);
+            var enclosure = await repo.All<Enclosure>()
+                .FirstOrDefaultAsync(e => e.Id == enclosureId);
 
-            //var parts = await partService.GetAllPartsForEnclosuresAsync(enclosureId);
+
+            var parts = await partService.GetAllPartsForEnclosuresAsync(enclosureId);
 
             var specificEnclosure = new EnclosureServiceModel()
             {
@@ -82,6 +86,31 @@ namespace POWER_System.Services
 
             return specificEnclosure;
         }
+
+        public async Task<EnclosureServiceModel> AddPartsToEnclosure(Guid enclosureId, IFormFile file)
+        {
+            var enclosure = await repo.All<Enclosure>()
+                .Include(e => e.Parts)
+                .FirstOrDefaultAsync(e => e.Id == enclosureId);
+
+            var parts = await partService.AddPartsFromFile(file, enclosureId);
+
+            var specificEnclosure = new EnclosureServiceModel()
+            {
+                Id = enclosureId,
+                Tag = enclosure.Tag, 
+                Status = enclosure.Status,
+                Revision = enclosure.Revision,
+                Comment = enclosure.Comment,
+                Location = enclosure.Location,
+                Plant = enclosure.Plant,
+                ProjectId = enclosure.ProjectId,
+                Parts = parts
+            };
+
+            return specificEnclosure;
+        }
+
 
     }
 }

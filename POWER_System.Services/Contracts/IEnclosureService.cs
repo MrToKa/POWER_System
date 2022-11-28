@@ -1,4 +1,5 @@
-﻿using POWER_System.Services.Models;
+﻿using Microsoft.AspNetCore.Http;
+using POWER_System.Services.Models;
 
 namespace POWER_System.Services.Contracts
 {
@@ -10,6 +11,6 @@ namespace POWER_System.Services.Contracts
 
         Task<EnclosureServiceModel> EnclosureDetails(Guid enclosureId);
 
-        //Task<EnclosureServiceModel> AddPartsToEnclosure(IEnumerable<PartServiceModel> model);
+        Task<EnclosureServiceModel> AddPartsToEnclosure(Guid enclosureId, IFormFile file);
     }
 }

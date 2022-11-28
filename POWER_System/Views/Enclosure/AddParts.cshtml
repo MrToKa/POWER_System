@@ -1,0 +1,54 @@
+﻿@model EnclosureServiceModel
+
+@{
+    ViewBag.Title = $"Enclosure {Model.Tag} Details";
+}
+
+<form enctype="multipart/form-data" method="post">
+    <dl>
+        <dt>
+            <label></label>
+        </dt>
+        <dd>
+            <input name="file" type="file" />
+        </dd>
+    </dl>
+    <input class="btn" name="input" asp-action="AddParts" asp-controller="Enclosure" asp-route-id="@Model.Id" type="submit" value="Upload" />
+    <input type="hidden" asp-for="@Model.Id" class="form-control" value="@Context.GetRouteData().Values["id"]" />
+</form>
+
+<div class="container text-center">
+    <div class="row align-items-start">
+        <div class="col">
+            Enclosure parts:<br />
+            @if (Model.Parts?.Count() == 0)
+            {
+                <text>No enclosures/cabinets for this project</text>
+            }
+            else
+            {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Device Tag</th>
+                            <th scope="col">Manufacturer</th>
+                            <th scope="col">OrderNumber</th>
+                            <th scope="col">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var part in Model.Parts)
+                        {
+                            <tr>
+                                <td>@part.DeviceTag</td>
+                                <td>@part.Manufacturer</td>
+                                <td>@part.OrderNumber</td>
+                                <td>@part.Description</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>

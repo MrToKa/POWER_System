@@ -50,5 +50,21 @@ namespace POWER_System.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AddParts(Guid id)
+        {
+            var model = await enclosureService.EnclosureDetails(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddParts(Guid id, IFormFile file)
+        {
+            var model = await enclosureService.AddPartsToEnclosure(id, file);
+
+            return View(model);
+        }
     }
 }
