@@ -7,7 +7,7 @@ public interface IPartService
 {
     Task<IEnumerable<PartServiceModel>> GetAllPartsForEnclosuresAsync(Guid enclosureId);
 
-    Task<IEnumerable<PartServiceModel>> AddParts(IEnumerable<PartServiceModel> model);
+    Task AssignPartsToEnclosure(IEnumerable<PartServiceModel> model, Guid enclosureId);
 
     Task<List<PartServiceModel>> AddPartsFromFile(IFormFile file, Guid enclosureId);
 }

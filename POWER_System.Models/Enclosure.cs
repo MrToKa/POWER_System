@@ -58,7 +58,7 @@ public class Enclosure
 
     // TODO: Implement documentation class for the enclosure.
 
-    public virtual IEnumerable<Part> Parts { get; set; }
+    public virtual List<Part> Parts { get; set; }
 
     public virtual IEnumerable<Cable> Cables { get; set; }
 

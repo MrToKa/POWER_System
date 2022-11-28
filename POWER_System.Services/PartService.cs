@@ -23,7 +23,9 @@ public class PartService : IPartService
 
     public async Task<IEnumerable<PartServiceModel>> GetAllPartsForEnclosuresAsync(Guid enclosureId)
     {
-        var enclosure = await repo.All<Enclosure>().FirstOrDefaultAsync(e => e.Id == enclosureId);
+        var enclosure = await repo.All<Enclosure>()
+            .Include(p => p.Parts)
+            .FirstOrDefaultAsync(e => e.Id == enclosureId);
 
         List<PartServiceModel> parts = new List<PartServiceModel>();
 
@@ -43,26 +45,28 @@ public class PartService : IPartService
         return parts;
     }
 
-    public async Task<IEnumerable<PartServiceModel>> AddParts(IEnumerable<PartServiceModel> model)
+    public async Task AssignPartsToEnclosure(IEnumerable<PartServiceModel> model, Guid enclosureId)
     {
-        List<PartServiceModel> parts = new List<PartServiceModel>();
+        var enclosure = await repo.All<Enclosure>()
+            .Include(p => p.Parts)
+            .FirstOrDefaultAsync(e => e.Id == enclosureId);
 
-        foreach (var serviceModel in model)
+        List<Part> assignedParts = new List<Part>();
+
+        foreach (var part in model)
         {
-            var part = new PartServiceModel()
-            {
-                DeviceTag = serviceModel.DeviceTag,
-                Manufacturer = serviceModel.Manufacturer,
-                OrderNumber = serviceModel.OrderNumber,
-                Description = serviceModel.Description,
-                Delivery = serviceModel.Delivery,
-                Comment = serviceModel.Comment
-            };
+            var databasePart = await repo.All<Part>()
+                .FirstOrDefaultAsync(n => n.OrderNumber == part.OrderNumber);
 
-            parts.Add(part);
+            assignedParts.Add(databasePart);
+
         }
 
-        return parts;
+        enclosure.Parts = assignedParts;
+
+        //await repo.AddAsync(assignedParts);
+        await repo.SaveChangesAsync();
+
     }
 
     public async Task<List<PartServiceModel>> AddPartsFromFile(IFormFile file, Guid enclosureId)
@@ -106,8 +110,11 @@ public class PartService : IPartService
                 {
                     await AddPartToDatabase(part);
                 }
+
             }
         }
+
+        await AssignPartsToEnclosure(parts, enclosureId);
 
         return parts;
     }

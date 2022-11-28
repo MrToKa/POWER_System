@@ -80,8 +80,8 @@ namespace POWER_System.Services
                 Status = enclosure.Status,
                 Revision = enclosure.Revision,
                 Comment = enclosure.Comment,
-                //ProjectId = enclosure.Id,
-                //Parts = parts
+                ProjectId = enclosure.Id,
+                Parts = parts
             };
 
             return specificEnclosure;
@@ -110,6 +110,8 @@ namespace POWER_System.Services
 
             return specificEnclosure;
         }
+
+
 
 
     }
