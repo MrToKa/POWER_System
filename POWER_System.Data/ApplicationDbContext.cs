@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 using POWER_System.Models;
 
 namespace POWER_System.Data
@@ -31,13 +29,47 @@ namespace POWER_System.Data
 
         public DbSet<SiteService> SiteServices { get; set; }
 
+        public DbSet<EnclosurePart> EnclosurePart { get; set; }
+
+        public DbSet<PartTagQuantity> PartTagsQuantities { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
+            builder.Entity<Part>().HasKey(q => q.Id);
+            builder.Entity<Enclosure>().HasKey(q => q.Id);
+            builder.Entity<EnclosurePart>()
+                .HasKey(q => new {q.PartId, q.EnclosureId});
+
+            builder.Entity<EnclosurePart>(entity =>
+                entity.HasMany(p => p.PartsQuantity)
+                    .WithOne(e => e.EnclosurePart)
+                    .OnDelete(DeleteBehavior.Restrict)
+                );
+
+
+            builder.Entity<EnclosurePart>(entity =>
+            {
+                entity.HasOne(p => p.Enclosure)
+                    .WithMany(p => p.Parts)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<Part>(entity =>
+            {
+                entity.HasMany(x => x.Parts)
+                    .WithOne(e => e.Part)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
             builder.Entity<Enclosure>(entity =>
             {
                 entity.HasMany(p => p.Parts)
-                    .WithMany(p => p.Enclosure);
+                    .WithOne(p => p.Enclosure)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
+
 
             builder.Entity<Enclosure>(entity =>
             {
@@ -54,7 +86,6 @@ namespace POWER_System.Data
                 entity.HasMany(e => e.Enclosures)
                 .WithOne(p => p.Project);
             });
-
 
             base.OnModelCreating(builder);
         }

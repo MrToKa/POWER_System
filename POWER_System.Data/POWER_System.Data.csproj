@@ -19,4 +19,8 @@
     <ProjectReference Include="..\POWER_System.Models\POWER_System.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

@@ -16,5 +16,7 @@ public class PartViewModel
     
     public decimal? Price { get; set; }
 
+    public virtual List<TagQuantityViewModel>? TagsQuantity { get; set; }
+
     public OrderDelivery Delivery { get; set; }
 }

@@ -8,7 +8,7 @@ public class Enclosure
 {
     public Enclosure()
     {
-        Parts = new List<Part>();
+        //Parts = new List<Part>();
         Cables = new List<Cable>();
         CablesOrders = new List<CableOrder>();
     }
@@ -58,7 +58,9 @@ public class Enclosure
 
     // TODO: Implement documentation class for the enclosure.
 
-    public virtual List<Part> Parts { get; set; }
+    //public virtual List<Part> Parts { get; set; }
+
+    public List<EnclosurePart> Parts { get; set; }
 
     public virtual IEnumerable<Cable> Cables { get; set; }
 

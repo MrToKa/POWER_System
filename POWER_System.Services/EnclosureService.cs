@@ -66,8 +66,9 @@ namespace POWER_System.Services
         public async Task<EnclosureServiceModel> EnclosureDetails(Guid enclosureId)
         {
             var enclosure = await repo.All<Enclosure>()
+                .Include(p => p.Parts)
+                .ThenInclude(q => q.PartsQuantity)
                 .FirstOrDefaultAsync(e => e.Id == enclosureId);
-
 
             var parts = await partService.GetAllPartsForEnclosuresAsync(enclosureId);
 
@@ -81,10 +82,13 @@ namespace POWER_System.Services
                 Revision = enclosure.Revision,
                 Comment = enclosure.Comment,
                 ProjectId = enclosure.Id,
-                Parts = parts
+                Parts = parts,
+                //TagsQuantity = 
             };
 
             return specificEnclosure;
+
+
         }
 
         public async Task<EnclosureServiceModel> AddPartsToEnclosure(Guid enclosureId, IFormFile file)
@@ -107,6 +111,8 @@ namespace POWER_System.Services
                 ProjectId = enclosure.ProjectId,
                 Parts = parts
             };
+            
+            await repo.SaveChangesAsync();
 
             return specificEnclosure;
         }

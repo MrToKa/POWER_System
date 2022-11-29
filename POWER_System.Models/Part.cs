@@ -8,7 +8,7 @@ public class Part
 {
     public Part()
     {
-        this.Enclosure = new HashSet<Enclosure>();
+        //this.Enclosure = new List<Enclosure>();
         this.Storage = new HashSet<Storage>();
     }
 
@@ -45,7 +45,7 @@ public class Part
     /// Gets or sets the required or on stock quantity of the part.
     /// </summary>
     [Required]
-    public int Quantity { get; set; }
+    public double Quantity { get; set; }
 
     /// <summary>
     /// Gets or sets the price of the part. It can be used for calculating the price of the enclosure or the order.
@@ -58,7 +58,9 @@ public class Part
     [Required]
     public OrderDelivery Delivery { get; set; }
 
-    public virtual IEnumerable<Enclosure> Enclosure { get; set; }
+    //public virtual List<Enclosure> Enclosure { get; set; }
+
+    public List<EnclosurePart> Parts { get; set; }
 
     public virtual IEnumerable<Storage> Storage { get; set; }
 }

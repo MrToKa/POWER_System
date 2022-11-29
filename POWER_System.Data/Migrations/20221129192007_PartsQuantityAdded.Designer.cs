@@ -9,11 +9,11 @@ using POWER_System.Data;
 
 #nullable disable
 
-namespace POWER_System.Models.Migrations
+namespace POWER_System.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221128092547_PartEnclosureEntityBuilderModified")]
-    partial class PartEnclosureEntityBuilderModified
+    [Migration("20221129192007_PartsQuantityAdded")]
+    partial class PartsQuantityAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -192,15 +192,13 @@ namespace POWER_System.Models.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<Guid>("EnclosureId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Manufacturer")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Measure")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OrderNumber")
@@ -213,15 +211,13 @@ namespace POWER_System.Models.Migrations
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
 
                     b.Property<int?>("SiteServiceId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EnclosureId");
 
                     b.HasIndex("PartOrderId");
 
@@ -529,6 +525,27 @@ namespace POWER_System.Models.Migrations
                     b.ToTable("Enclosure");
                 });
 
+            modelBuilder.Entity("POWER_System.Models.EnclosurePart", b =>
+                {
+                    b.Property<int>("PartId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("EnclosureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.HasKey("PartId", "EnclosureId");
+
+                    b.HasIndex("EnclosureId");
+
+                    b.ToTable("EnclosurePart");
+                });
+
             modelBuilder.Entity("POWER_System.Models.Equipment", b =>
                 {
                     b.Property<int>("Id")
@@ -597,6 +614,34 @@ namespace POWER_System.Models.Migrations
                     b.HasIndex("StorageId");
 
                     b.ToTable("PartsOrders");
+                });
+
+            modelBuilder.Entity("POWER_System.Models.PartTagQuantity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<Guid>("EnclosurePartEnclosureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("EnclosurePartPartId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EnclosurePartPartId", "EnclosurePartEnclosureId");
+
+                    b.ToTable("PartTagsQuantities");
                 });
 
             modelBuilder.Entity("POWER_System.Models.Project", b =>
@@ -774,12 +819,6 @@ namespace POWER_System.Models.Migrations
 
             modelBuilder.Entity("Part", b =>
                 {
-                    b.HasOne("POWER_System.Models.Enclosure", "Enclosure")
-                        .WithMany("Parts")
-                        .HasForeignKey("EnclosureId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("POWER_System.Models.PartOrder", null)
                         .WithMany("Parts")
                         .HasForeignKey("PartOrderId");
@@ -787,8 +826,6 @@ namespace POWER_System.Models.Migrations
                     b.HasOne("POWER_System.Models.SiteService", null)
                         .WithMany("PartsNeeded")
                         .HasForeignKey("SiteServiceId");
-
-                    b.Navigation("Enclosure");
                 });
 
             modelBuilder.Entity("PartStorage", b =>
@@ -859,6 +896,25 @@ namespace POWER_System.Models.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("POWER_System.Models.EnclosurePart", b =>
+                {
+                    b.HasOne("POWER_System.Models.Enclosure", "Enclosure")
+                        .WithMany("Parts")
+                        .HasForeignKey("EnclosureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Part", "Part")
+                        .WithMany("Parts")
+                        .HasForeignKey("PartId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Enclosure");
+
+                    b.Navigation("Part");
+                });
+
             modelBuilder.Entity("POWER_System.Models.Equipment", b =>
                 {
                     b.HasOne("POWER_System.Models.Storage", null)
@@ -879,6 +935,17 @@ namespace POWER_System.Models.Migrations
                         .HasForeignKey("StorageId");
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("POWER_System.Models.PartTagQuantity", b =>
+                {
+                    b.HasOne("POWER_System.Models.EnclosurePart", "EnclosurePart")
+                        .WithMany("PartsQuantity")
+                        .HasForeignKey("EnclosurePartPartId", "EnclosurePartEnclosureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("EnclosurePart");
                 });
 
             modelBuilder.Entity("POWER_System.Models.Project", b =>
@@ -912,6 +979,11 @@ namespace POWER_System.Models.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Part", b =>
+                {
+                    b.Navigation("Parts");
+                });
+
             modelBuilder.Entity("POWER_System.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Claims");
@@ -935,6 +1007,11 @@ namespace POWER_System.Models.Migrations
                     b.Navigation("CablesOrders");
 
                     b.Navigation("Parts");
+                });
+
+            modelBuilder.Entity("POWER_System.Models.EnclosurePart", b =>
+                {
+                    b.Navigation("PartsQuantity");
                 });
 
             modelBuilder.Entity("POWER_System.Models.PartOrder", b =>

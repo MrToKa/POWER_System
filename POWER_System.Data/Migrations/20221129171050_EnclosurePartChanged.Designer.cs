@@ -9,11 +9,11 @@ using POWER_System.Data;
 
 #nullable disable
 
-namespace POWER_System.Models.Migrations
+namespace POWER_System.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221030103305_AddedNameProperties")]
-    partial class AddedNameProperties
+    [Migration("20221129171050_EnclosurePartChanged")]
+    partial class EnclosurePartChanged
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,21 +23,6 @@ namespace POWER_System.Models.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("EnclosurePart", b =>
-                {
-                    b.Property<Guid>("EnclosureId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("PartsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EnclosureId", "PartsId");
-
-                    b.HasIndex("PartsId");
-
-                    b.ToTable("EnclosurePart");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -256,7 +241,7 @@ namespace POWER_System.Models.Migrations
                     b.ToTable("PartStorage");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.ApplicationUser", b =>
+            modelBuilder.Entity("POWER_System.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -355,7 +340,7 @@ namespace POWER_System.Models.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("POWER_System.Data.Cable", b =>
+            modelBuilder.Entity("POWER_System.Models.Cable", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -460,7 +445,7 @@ namespace POWER_System.Models.Migrations
                     b.ToTable("Cables");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.CableOrder", b =>
+            modelBuilder.Entity("POWER_System.Models.CableOrder", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -503,7 +488,7 @@ namespace POWER_System.Models.Migrations
                     b.ToTable("CablesOrders");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.Enclosure", b =>
+            modelBuilder.Entity("POWER_System.Models.Enclosure", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -540,7 +525,25 @@ namespace POWER_System.Models.Migrations
                     b.ToTable("Enclosure");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.Equipment", b =>
+            modelBuilder.Entity("POWER_System.Models.EnclosurePart", b =>
+                {
+                    b.Property<int>("PartId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("EnclosureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("PartId", "EnclosureId");
+
+                    b.HasIndex("EnclosureId");
+
+                    b.ToTable("EnclosurePart");
+                });
+
+            modelBuilder.Entity("POWER_System.Models.Equipment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -573,7 +576,7 @@ namespace POWER_System.Models.Migrations
                     b.ToTable("Equipment");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.PartOrder", b =>
+            modelBuilder.Entity("POWER_System.Models.PartOrder", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -610,7 +613,7 @@ namespace POWER_System.Models.Migrations
                     b.ToTable("PartsOrders");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.Project", b =>
+            modelBuilder.Entity("POWER_System.Models.Project", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -648,7 +651,7 @@ namespace POWER_System.Models.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.SiteService", b =>
+            modelBuilder.Entity("POWER_System.Models.SiteService", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -679,7 +682,7 @@ namespace POWER_System.Models.Migrations
                     b.ToTable("SiteServices");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.Storage", b =>
+            modelBuilder.Entity("POWER_System.Models.Storage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -720,21 +723,6 @@ namespace POWER_System.Models.Migrations
                     b.ToTable("ProjectSiteService");
                 });
 
-            modelBuilder.Entity("EnclosurePart", b =>
-                {
-                    b.HasOne("POWER_System.Data.Enclosure", null)
-                        .WithMany()
-                        .HasForeignKey("EnclosureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Part", null)
-                        .WithMany()
-                        .HasForeignKey("PartsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -746,11 +734,11 @@ namespace POWER_System.Models.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("POWER_System.Data.ApplicationUser", null)
+                    b.HasOne("POWER_System.Models.ApplicationUser", null)
                         .WithMany("Claims")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("POWER_System.Data.ApplicationUser", null)
+                    b.HasOne("POWER_System.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -759,11 +747,11 @@ namespace POWER_System.Models.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("POWER_System.Data.ApplicationUser", null)
+                    b.HasOne("POWER_System.Models.ApplicationUser", null)
                         .WithMany("Logins")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("POWER_System.Data.ApplicationUser", null)
+                    b.HasOne("POWER_System.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -772,7 +760,7 @@ namespace POWER_System.Models.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("POWER_System.Data.ApplicationUser", null)
+                    b.HasOne("POWER_System.Models.ApplicationUser", null)
                         .WithMany("Roles")
                         .HasForeignKey("ApplicationUserId");
 
@@ -782,7 +770,7 @@ namespace POWER_System.Models.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("POWER_System.Data.ApplicationUser", null)
+                    b.HasOne("POWER_System.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -791,7 +779,7 @@ namespace POWER_System.Models.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("POWER_System.Data.ApplicationUser", null)
+                    b.HasOne("POWER_System.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -800,11 +788,11 @@ namespace POWER_System.Models.Migrations
 
             modelBuilder.Entity("Part", b =>
                 {
-                    b.HasOne("POWER_System.Data.PartOrder", null)
+                    b.HasOne("POWER_System.Models.PartOrder", null)
                         .WithMany("Parts")
                         .HasForeignKey("PartOrderId");
 
-                    b.HasOne("POWER_System.Data.SiteService", null)
+                    b.HasOne("POWER_System.Models.SiteService", null)
                         .WithMany("PartsNeeded")
                         .HasForeignKey("SiteServiceId");
                 });
@@ -817,58 +805,58 @@ namespace POWER_System.Models.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("POWER_System.Data.Storage", null)
+                    b.HasOne("POWER_System.Models.Storage", null)
                         .WithMany()
                         .HasForeignKey("StorageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("POWER_System.Data.Cable", b =>
+            modelBuilder.Entity("POWER_System.Models.Cable", b =>
                 {
-                    b.HasOne("POWER_System.Data.CableOrder", null)
+                    b.HasOne("POWER_System.Models.CableOrder", null)
                         .WithMany("Cables")
                         .HasForeignKey("CableOrderId");
 
-                    b.HasOne("POWER_System.Data.Enclosure", "Enclosure")
+                    b.HasOne("POWER_System.Models.Enclosure", "Enclosure")
                         .WithMany("Cables")
                         .HasForeignKey("EnclosureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("POWER_System.Data.SiteService", null)
+                    b.HasOne("POWER_System.Models.SiteService", null)
                         .WithMany("CablesNeeded")
                         .HasForeignKey("SiteServiceId");
 
-                    b.HasOne("POWER_System.Data.Storage", null)
+                    b.HasOne("POWER_System.Models.Storage", null)
                         .WithMany("Cables")
                         .HasForeignKey("StorageId");
 
                     b.Navigation("Enclosure");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.CableOrder", b =>
+            modelBuilder.Entity("POWER_System.Models.CableOrder", b =>
                 {
-                    b.HasOne("POWER_System.Data.Enclosure", null)
+                    b.HasOne("POWER_System.Models.Enclosure", null)
                         .WithMany("CablesOrders")
                         .HasForeignKey("EnclosureId");
 
-                    b.HasOne("POWER_System.Data.Project", "Project")
+                    b.HasOne("POWER_System.Models.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("POWER_System.Data.Storage", null)
+                    b.HasOne("POWER_System.Models.Storage", null)
                         .WithMany("CableOrders")
                         .HasForeignKey("StorageId");
 
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.Enclosure", b =>
+            modelBuilder.Entity("POWER_System.Models.Enclosure", b =>
                 {
-                    b.HasOne("POWER_System.Data.Project", "Project")
+                    b.HasOne("POWER_System.Models.Project", "Project")
                         .WithMany("Enclosures")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -877,38 +865,79 @@ namespace POWER_System.Models.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.Equipment", b =>
+            modelBuilder.Entity("POWER_System.Models.EnclosurePart", b =>
                 {
-                    b.HasOne("POWER_System.Data.Storage", null)
+                    b.HasOne("POWER_System.Models.Enclosure", "Enclosure")
+                        .WithMany("Parts")
+                        .HasForeignKey("EnclosureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Part", "Part")
+                        .WithMany("Parts")
+                        .HasForeignKey("PartId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.OwnsOne("System.Collections.Generic.List<string>", "PartTag", b1 =>
+                        {
+                            b1.Property<int>("EnclosurePartPartId")
+                                .HasColumnType("int");
+
+                            b1.Property<Guid>("EnclosurePartEnclosureId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Capacity")
+                                .HasColumnType("int");
+
+                            b1.HasKey("EnclosurePartPartId", "EnclosurePartEnclosureId");
+
+                            b1.ToTable("EnclosurePart");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EnclosurePartPartId", "EnclosurePartEnclosureId");
+                        });
+
+                    b.Navigation("Enclosure");
+
+                    b.Navigation("Part");
+
+                    b.Navigation("PartTag")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("POWER_System.Models.Equipment", b =>
+                {
+                    b.HasOne("POWER_System.Models.Storage", null)
                         .WithMany("Equipment")
                         .HasForeignKey("StorageId");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.PartOrder", b =>
+            modelBuilder.Entity("POWER_System.Models.PartOrder", b =>
                 {
-                    b.HasOne("POWER_System.Data.Project", "Project")
+                    b.HasOne("POWER_System.Models.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("POWER_System.Data.Storage", null)
+                    b.HasOne("POWER_System.Models.Storage", null)
                         .WithMany("PartOrders")
                         .HasForeignKey("StorageId");
 
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.Project", b =>
+            modelBuilder.Entity("POWER_System.Models.Project", b =>
                 {
-                    b.HasOne("POWER_System.Data.ApplicationUser", null)
+                    b.HasOne("POWER_System.Models.ApplicationUser", null)
                         .WithMany("PersonalProjects")
                         .HasForeignKey("ApplicationUserId");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.Storage", b =>
+            modelBuilder.Entity("POWER_System.Models.Storage", b =>
                 {
-                    b.HasOne("POWER_System.Data.Project", "Project")
+                    b.HasOne("POWER_System.Models.Project", "Project")
                         .WithMany("Storages")
                         .HasForeignKey("ProjectId");
 
@@ -917,20 +946,25 @@ namespace POWER_System.Models.Migrations
 
             modelBuilder.Entity("ProjectSiteService", b =>
                 {
-                    b.HasOne("POWER_System.Data.Project", null)
+                    b.HasOne("POWER_System.Models.Project", null)
                         .WithMany()
                         .HasForeignKey("ProjectsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("POWER_System.Data.SiteService", null)
+                    b.HasOne("POWER_System.Models.SiteService", null)
                         .WithMany()
                         .HasForeignKey("SiteServicesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("POWER_System.Data.ApplicationUser", b =>
+            modelBuilder.Entity("Part", b =>
+                {
+                    b.Navigation("Parts");
+                });
+
+            modelBuilder.Entity("POWER_System.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Claims");
 
@@ -941,38 +975,40 @@ namespace POWER_System.Models.Migrations
                     b.Navigation("Roles");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.CableOrder", b =>
+            modelBuilder.Entity("POWER_System.Models.CableOrder", b =>
                 {
                     b.Navigation("Cables");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.Enclosure", b =>
+            modelBuilder.Entity("POWER_System.Models.Enclosure", b =>
                 {
                     b.Navigation("Cables");
 
                     b.Navigation("CablesOrders");
+
+                    b.Navigation("Parts");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.PartOrder", b =>
+            modelBuilder.Entity("POWER_System.Models.PartOrder", b =>
                 {
                     b.Navigation("Parts");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.Project", b =>
+            modelBuilder.Entity("POWER_System.Models.Project", b =>
                 {
                     b.Navigation("Enclosures");
 
                     b.Navigation("Storages");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.SiteService", b =>
+            modelBuilder.Entity("POWER_System.Models.SiteService", b =>
                 {
                     b.Navigation("CablesNeeded");
 
                     b.Navigation("PartsNeeded");
                 });
 
-            modelBuilder.Entity("POWER_System.Data.Storage", b =>
+            modelBuilder.Entity("POWER_System.Models.Storage", b =>
                 {
                     b.Navigation("CableOrders");
 
