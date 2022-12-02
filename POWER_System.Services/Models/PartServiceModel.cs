@@ -18,7 +18,5 @@ public class PartServiceModel
 
     public double Quantity { get; set; }
 
-    public virtual IEnumerable<TagQuantityServiceModel>? TagsQuantity { get; set; }
-
     public OrderDelivery Delivery { get; set; }
 }

@@ -18,7 +18,7 @@ public class EnclosurePart
 
     public Enclosure Enclosure { get; set; }
 
-    public double Quantity { get; set; }
+    public string Tag { get; set; }
 
-    public List<PartTagQuantity> PartsQuantity { get; set; } = new List<PartTagQuantity>();
+    public double Quantity { get; set; }
 }

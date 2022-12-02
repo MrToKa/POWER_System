@@ -2,7 +2,7 @@
 
 namespace POWER_System.Models;
 
-public class PartTagQuantity
+public class PartsQuantity
 {
     [Key]
     public int Id { get; set; }

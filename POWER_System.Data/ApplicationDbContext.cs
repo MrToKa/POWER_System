@@ -31,22 +31,24 @@ namespace POWER_System.Data
 
         public DbSet<EnclosurePart> EnclosurePart { get; set; }
 
-        public DbSet<PartTagQuantity> PartTagsQuantities { get; set; }
+        public DbSet<PartsQuantity> PartTagsQuantities { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
+            
             builder.Entity<Part>().HasKey(q => q.Id);
             builder.Entity<Enclosure>().HasKey(q => q.Id);
+            //builder.Entity<EnclosurePart>()
+            //    .HasKey(q => new {q.PartId, q.EnclosureId});
+            
             builder.Entity<EnclosurePart>()
-                .HasKey(q => new {q.PartId, q.EnclosureId});
+                .HasKey(i => i.Id);
 
-            builder.Entity<EnclosurePart>(entity =>
-                entity.HasMany(p => p.PartsQuantity)
-                    .WithOne(e => e.EnclosurePart)
-                    .OnDelete(DeleteBehavior.Restrict)
-                );
+            //builder.Entity<EnclosurePart>(entity =>
+            //    entity.HasMany(p => p.PartsQuantity)
+            //        .WithOne(e => e.EnclosurePart)
+            //        .OnDelete(DeleteBehavior.Restrict));
 
 
             builder.Entity<EnclosurePart>(entity =>

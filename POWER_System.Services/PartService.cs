@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Runtime.InteropServices;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using POWER_System.Data.Repositories;
 using POWER_System.Models;
@@ -14,7 +15,6 @@ public class PartService : IPartService
 {
     private readonly IApplicationDbRepository repo;
 
-
     public PartService(IApplicationDbRepository _repo)
     {
         repo = _repo;
@@ -25,8 +25,6 @@ public class PartService : IPartService
         var enclosure = await repo.All<Enclosure>()
             .Include(p => p.Parts)
             .ThenInclude(p => p.Part)
-            .Include(x => x.Parts)
-            .ThenInclude(q => q.PartsQuantity)
             .FirstOrDefaultAsync(e => e.Id == enclosureId);
 
         List<PartServiceModel> parts = new List<PartServiceModel>();
@@ -39,52 +37,54 @@ public class PartService : IPartService
                 OrderNumber = enclosurePart.Part.OrderNumber,
                 Description = enclosurePart.Part.Description,
                 Delivery = enclosurePart.Part.Delivery,
-                //TagsQuantity = 
+                Quantity = enclosurePart.Quantity,
+                DeviceTag = enclosurePart.Tag
             };
 
             parts.Add(part);
 
         }
 
-        return parts;
+        return parts.Where(q => q.Quantity > 0);
     }
 
-    public async Task AssignPartsToEnclosure(IEnumerable<PartServiceModel> model, Guid enclosureId)
+    public async Task<List<EnclosurePart>> AssignPartsToEnclosure(IEnumerable<PartServiceModel> model, Guid enclosureId)
     {
-        var enclosure = await repo.All<Enclosure>()
-            .Include(p => p.Parts)
-            .FirstOrDefaultAsync(e => e.Id == enclosureId);
-
         List<EnclosurePart> assignedParts = new List<EnclosurePart>();
+
+        await ResetCounter(enclosureId);
 
         foreach (var part in model)
         {
-            var databasePart = await repo.All<Part>().AsNoTracking()
-                .Include(p => p.Parts)
-                .FirstOrDefaultAsync(n => n.OrderNumber == part.OrderNumber);
 
-            var partON = databasePart.OrderNumber;
+            var partON = part.OrderNumber;
             string partTag = part.DeviceTag;
             double quantity = part.Quantity;
 
-            var currentPart = await repo.All<EnclosurePart>()
-                .Include(p => p.Part)
-                .Where(e => e.EnclosureId == enclosureId)
-                .FirstOrDefaultAsync(n => n.Part.OrderNumber == partON);
-
-            if (currentPart == null)
+            if (assignedParts.Any(t => t.Tag == partTag && t.Part.OrderNumber == partON && t.EnclosureId == enclosureId))
             {
-                var createdPart = await AssignPartToEnclosure(partON, enclosureId, partTag, quantity);
-
-                assignedParts.Add(createdPart);
+                assignedParts.First(t => t.Tag == partTag).Quantity += quantity;
+            }
+            else if (await repo.All<EnclosurePart>()
+                .AnyAsync(t => t.Tag == partTag && t.Part.OrderNumber == partON && t.EnclosureId == enclosureId))
+            {
+                var zeroPart = await repo.All<EnclosurePart>()
+                    .FirstOrDefaultAsync((t => t.Part.OrderNumber == partON && t.Tag == partTag && t.EnclosureId == enclosureId));
+                
+                zeroPart.Quantity += quantity;
+                assignedParts.Add(zeroPart);
             }
             else
             {
-                currentPart.PartsQuantity.Add(new PartTagQuantity(){Tag = partTag, Quantity = quantity});
+                var createdPart = await AssignPartToEnclosure(partON, enclosureId, partTag, quantity);
+                assignedParts.Add(createdPart);
             }
+
         }
 
-        enclosure.Parts = assignedParts;
+        await repo.SaveChangesAsync();
+
+        return assignedParts;
     }
 
     public async Task<List<PartServiceModel>> AddPartsFromFile(IFormFile file, Guid enclosureId)
@@ -102,9 +102,9 @@ public class PartService : IPartService
 
         FileStream reader = new FileStream(filePath, FileMode.OpenOrCreate);
         {
-            var labelling = (EplanLabelling)serializer.Deserialize(reader);
+            var labeling = (EplanLabelling)serializer.Deserialize(reader);
 
-            foreach (var line in labelling.Document.Page.Line)
+            foreach (var line in labeling.Document.Page.Line)
             {
                 string deviceTag = line.Label.Property[0].PropertyValue;
                 string manufacturer = line.Label.Property[1].PropertyValue;
@@ -118,19 +118,18 @@ public class PartService : IPartService
                     Manufacturer = manufacturer,
                     Description = description,
                     OrderNumber = orderNumber,
-                    Quantity = quantity
+                    Quantity = quantity,
                 };
 
-                parts.Add(part);
+                var databasePart = repo.All<Part>().AsNoTracking()
+                    .Any(n => n.OrderNumber == part.OrderNumber);
 
-                var databasePart = await repo.All<Part>().AsNoTracking()
-                    .FirstOrDefaultAsync(n => n.OrderNumber == part.OrderNumber);
-
-                if (databasePart == null)
+                if (databasePart == false)
                 {
                     await AddPartToDatabase(part);
                 }
 
+                parts.Add(part);
             }
         }
 
@@ -153,26 +152,38 @@ public class PartService : IPartService
         await repo.SaveChangesAsync();
     }
 
-    private async Task<EnclosurePart> AssignPartToEnclosure(string partON, Guid enclosureId, string devTag, double qty)
+    private async Task<EnclosurePart> AssignPartToEnclosure(string dBpartON, Guid enclosureId, string devTag, double qty)
     {
-        var part = await repo.All<Part>()
-            .Include(p => p.Parts)
-            .FirstOrDefaultAsync(n => n.OrderNumber == partON);
+        var databasePart = await repo.All<Part>()
+            //.Include(p => p.Parts).AsNoTracking()
+            .FirstOrDefaultAsync(p => p.OrderNumber == dBpartON);
 
         var assignedPart = new EnclosurePart()
         {
-            Part = part,
-            PartId = part.Id,
+            PartId = databasePart.Id,
+            Part = databasePart,
             EnclosureId = enclosureId,
-            PartsQuantity = new List<PartTagQuantity>()
-            {
-                new PartTagQuantity()
-                    {Tag = devTag, Quantity = qty}
-            }
+            Tag = devTag,
+            Quantity = qty
         };
 
         await repo.AddAsync(assignedPart);
         await repo.SaveChangesAsync();
         return assignedPart;
     }
+
+    private async Task ResetCounter(Guid enclosureId)
+    {
+        var currentPart = repo.All<EnclosurePart>()
+            .Include(p => p.Part)
+            .Where(e => e.EnclosureId == enclosureId);
+
+        foreach (var part in currentPart)
+        {
+            part.Quantity = 0;
+        }
+
+        await repo.SaveChangesAsync();
+    }
+
 }
