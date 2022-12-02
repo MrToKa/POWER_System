@@ -20,29 +20,76 @@ public class PartService : IPartService
         repo = _repo;
     }
 
-    public async Task<IEnumerable<PartServiceModel>> GetAllPartsForEnclosuresAsync(Guid enclosureId)
+    public async Task<IEnumerable<PartServiceModel>> GetSummarizedPartsForEnclosuresAsync(Guid enclosureId)
     {
-        var enclosure = await repo.All<Enclosure>()
-            .Include(p => p.Parts)
-            .ThenInclude(p => p.Part)
-            .FirstOrDefaultAsync(e => e.Id == enclosureId);
+        var enclosure = await repo.All<EnclosurePart>()
+            .Include(p => p.Part)
+            .ThenInclude(p => p.Parts)
+            .Where(e => e.EnclosureId == enclosureId).ToListAsync();
 
         List<PartServiceModel> parts = new List<PartServiceModel>();
 
-        foreach (var enclosurePart in enclosure.Parts)
+        foreach (var enclosurePart in enclosure)
         {
+            string OrderNumber = enclosurePart.Part.OrderNumber;
+            double Quantity = enclosurePart.Quantity;
+
             var part = new PartServiceModel()
             {
                 Manufacturer = enclosurePart.Part.Manufacturer,
-                OrderNumber = enclosurePart.Part.OrderNumber,
+                OrderNumber = OrderNumber,
                 Description = enclosurePart.Part.Description,
                 Delivery = enclosurePart.Part.Delivery,
                 Quantity = enclosurePart.Quantity,
-                DeviceTag = enclosurePart.Tag
             };
 
-            parts.Add(part);
 
+            if (parts.Any(o => o.OrderNumber == OrderNumber))
+            {
+                parts.First(o => o.OrderNumber == OrderNumber).Quantity += Quantity;
+            }
+            else
+            {
+                parts.Add(part);
+            }
+        }
+
+        return parts.Where(q => q.Quantity > 0);
+    }
+
+    public async Task<IEnumerable<PartServiceModel>> GetDetailedPartsForEnclosuresAsync(Guid enclosureId)
+    {
+        var enclosure = await repo.All<EnclosurePart>()
+            .Include(p => p.Part)
+            .ThenInclude(p => p.Parts)
+            .Where(e => e.EnclosureId == enclosureId).ToListAsync();
+
+        List<PartServiceModel> parts = new List<PartServiceModel>();
+
+        foreach (var enclosurePart in enclosure)
+        {
+            string orderNumber = enclosurePart.Part.OrderNumber;
+            string tag = enclosurePart.Tag;
+            double quantity = enclosurePart.Quantity;
+
+            var part = new PartServiceModel()
+            {
+                Manufacturer = enclosurePart.Part.Manufacturer,
+                OrderNumber = orderNumber,
+                Description = enclosurePart.Part.Description,
+                Delivery = enclosurePart.Part.Delivery,
+                Quantity = enclosurePart.Quantity,
+                DeviceTag = enclosurePart.Tag,
+            };
+
+            if (parts.Any(t => t.DeviceTag == tag && t.OrderNumber == orderNumber))
+            {
+                parts.First(o => o.OrderNumber == orderNumber).Quantity += quantity;
+            }
+            else
+            {
+                parts.Add(part);
+            }
         }
 
         return parts.Where(q => q.Quantity > 0);
@@ -70,7 +117,7 @@ public class PartService : IPartService
             {
                 var zeroPart = await repo.All<EnclosurePart>()
                     .FirstOrDefaultAsync((t => t.Part.OrderNumber == partON && t.Tag == partTag && t.EnclosureId == enclosureId));
-                
+
                 zeroPart.Quantity += quantity;
                 assignedParts.Add(zeroPart);
             }
@@ -121,7 +168,7 @@ public class PartService : IPartService
                     Quantity = quantity,
                 };
 
-                var databasePart = repo.All<Part>().AsNoTracking()
+                var databasePart = repo.All<Part>()
                     .Any(n => n.OrderNumber == part.OrderNumber);
 
                 if (databasePart == false)
@@ -129,7 +176,14 @@ public class PartService : IPartService
                     await AddPartToDatabase(part);
                 }
 
-                parts.Add(part);
+                if (parts.Any(t => t.DeviceTag == deviceTag && t.OrderNumber == orderNumber))
+                {
+                    parts.First(o => o.OrderNumber == orderNumber).Quantity += quantity;
+                }
+                else
+                {
+                    parts.Add(part);
+                }
             }
         }
 
@@ -155,7 +209,6 @@ public class PartService : IPartService
     private async Task<EnclosurePart> AssignPartToEnclosure(string dBpartON, Guid enclosureId, string devTag, double qty)
     {
         var databasePart = await repo.All<Part>()
-            //.Include(p => p.Parts).AsNoTracking()
             .FirstOrDefaultAsync(p => p.OrderNumber == dBpartON);
 
         var assignedPart = new EnclosurePart()

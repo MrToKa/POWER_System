@@ -1,7 +1,7 @@
 ﻿@model EnclosureServiceModel
 
 @{
-    ViewBag.Title = $"Enclosure {Model.Tag} Details";
+    ViewBag.Title = $"Enclosure {Model.Tag} Parts details";
 }
 
 <form enctype="multipart/form-data" method="post">
@@ -17,12 +17,10 @@
     <input type="hidden" asp-for="@Model.Id" class="form-control" value="@Context.GetRouteData().Values["id"]" />
 </form>
 
-@*<partial name="_PartsTable" />*@
-
 <div class="container text-center">
     <div class="row align-items-start">
         <div class="col">
-            <h3>Enclosure parts:</h3><br />
+            <h3>@ViewBag.Title:</h3><br />
             @if (Model.Parts?.Count() == 0)
             {
                 <text>No parts or cables for this Enclosure/Cabinet</text>

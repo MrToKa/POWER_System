@@ -9,7 +9,9 @@ namespace POWER_System.Services.Contracts
 
         Task<IEnumerable<EnclosureServiceModel>> GetAllEnclosuresForProjectAsync(Guid projectId);
 
-        Task<EnclosureServiceModel> EnclosureDetails(Guid enclosureId);
+        Task<EnclosureServiceModel> EnclosureSummarizedDetails(Guid enclosureId);
+
+        Task<EnclosureServiceModel> EnclosureFullDetails(Guid enclosureId);
 
         Task<EnclosureServiceModel> AddPartsToEnclosure(Guid enclosureId, IFormFile file);
     }

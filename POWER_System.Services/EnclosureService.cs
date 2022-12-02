@@ -63,13 +63,13 @@ namespace POWER_System.Services
         }
 
 
-        public async Task<EnclosureServiceModel> EnclosureDetails(Guid enclosureId)
+        public async Task<EnclosureServiceModel> EnclosureSummarizedDetails(Guid enclosureId)
         {
             var enclosure = await repo.All<Enclosure>()
                 .Include(p => p.Parts)
                 .FirstOrDefaultAsync(e => e.Id == enclosureId);
 
-            var parts = await partService.GetAllPartsForEnclosuresAsync(enclosureId);
+            var parts = await partService.GetSummarizedPartsForEnclosuresAsync(enclosureId);
 
             var specificEnclosure = new EnclosureServiceModel()
             {
@@ -85,14 +85,36 @@ namespace POWER_System.Services
             };
 
             return specificEnclosure;
+        }
 
+        public async Task<EnclosureServiceModel> EnclosureFullDetails(Guid enclosureId)
+        {
+            var enclosure = await repo.All<Enclosure>()
+                .Include(p => p.Parts)
+                .FirstOrDefaultAsync(e => e.Id == enclosureId);
 
+            var parts = await partService.GetDetailedPartsForEnclosuresAsync(enclosureId);
+
+            var specificEnclosure = new EnclosureServiceModel()
+            {
+                Id = enclosure.Id,
+                Plant = enclosure.Plant,
+                Location = enclosure.Location,
+                Tag = enclosure.Tag,
+                Status = enclosure.Status,
+                Revision = enclosure.Revision,
+                Comment = enclosure.Comment,
+                ProjectId = enclosure.Id,
+                Parts = parts,
+            };
+
+            return specificEnclosure;
         }
 
         public async Task<EnclosureServiceModel> AddPartsToEnclosure(Guid enclosureId, IFormFile file)
         {
-            var enclosure = await repo.All<Enclosure>().AsNoTracking()
-                .Include(e => e.Parts).AsNoTracking()
+            var enclosure = await repo.All<Enclosure>()
+                .Include(e => e.Parts)
                 .FirstOrDefaultAsync(e => e.Id == enclosureId);
 
             var parts = await partService.AddPartsFromFile(file, enclosureId);
@@ -114,9 +136,5 @@ namespace POWER_System.Services
 
             return specificEnclosure;
         }
-
-
-
-
     }
 }

@@ -6,7 +6,9 @@ namespace POWER_System.Services.Contracts;
 
 public interface IPartService
 {
-    Task<IEnumerable<PartServiceModel>> GetAllPartsForEnclosuresAsync(Guid enclosureId);
+    Task<IEnumerable<PartServiceModel>> GetSummarizedPartsForEnclosuresAsync(Guid enclosureId);
+
+    Task<IEnumerable<PartServiceModel>> GetDetailedPartsForEnclosuresAsync(Guid enclosureId);
 
     Task<List<EnclosurePart>> AssignPartsToEnclosure(IEnumerable<PartServiceModel> model, Guid enclosureId);
 

@@ -49,7 +49,7 @@ namespace POWER_System.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var model = await enclosureService.EnclosureDetails(id);
+            var model = await enclosureService.EnclosureSummarizedDetails(id);
 
             return View(model);
         }
@@ -64,7 +64,7 @@ namespace POWER_System.Controllers
         [HttpGet]
         public async Task<IActionResult> AddParts(Guid id)
         {
-            var model = await enclosureService.EnclosureDetails(id);
+            var model = await enclosureService.EnclosureFullDetails(id);
 
             return View(model);
         }
