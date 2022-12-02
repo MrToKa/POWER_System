@@ -525,21 +525,30 @@ namespace POWER_System.Data.Migrations
 
             modelBuilder.Entity("POWER_System.Models.EnclosurePart", b =>
                 {
-                    b.Property<int>("PartId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<Guid>("EnclosureId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("PartId")
                         .HasColumnType("int");
 
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
 
-                    b.HasKey("PartId", "EnclosureId");
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("EnclosureId");
+
+                    b.HasIndex("PartId");
 
                     b.ToTable("EnclosurePart");
                 });
@@ -614,7 +623,7 @@ namespace POWER_System.Data.Migrations
                     b.ToTable("PartsOrders");
                 });
 
-            modelBuilder.Entity("POWER_System.Models.PartTagQuantity", b =>
+            modelBuilder.Entity("POWER_System.Models.PartsQuantity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -622,10 +631,7 @@ namespace POWER_System.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<Guid>("EnclosurePartEnclosureId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("EnclosurePartPartId")
+                    b.Property<int>("EnclosurePartId")
                         .HasColumnType("int");
 
                     b.Property<double>("Quantity")
@@ -637,7 +643,7 @@ namespace POWER_System.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EnclosurePartPartId", "EnclosurePartEnclosureId");
+                    b.HasIndex("EnclosurePartId");
 
                     b.ToTable("PartTagsQuantities");
                 });
@@ -935,12 +941,12 @@ namespace POWER_System.Data.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("POWER_System.Models.PartTagQuantity", b =>
+            modelBuilder.Entity("POWER_System.Models.PartsQuantity", b =>
                 {
                     b.HasOne("POWER_System.Models.EnclosurePart", "EnclosurePart")
-                        .WithMany("PartsQuantity")
-                        .HasForeignKey("EnclosurePartPartId", "EnclosurePartEnclosureId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithMany()
+                        .HasForeignKey("EnclosurePartId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("EnclosurePart");
@@ -1005,11 +1011,6 @@ namespace POWER_System.Data.Migrations
                     b.Navigation("CablesOrders");
 
                     b.Navigation("Parts");
-                });
-
-            modelBuilder.Entity("POWER_System.Models.EnclosurePart", b =>
-                {
-                    b.Navigation("PartsQuantity");
                 });
 
             modelBuilder.Entity("POWER_System.Models.PartOrder", b =>

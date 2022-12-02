@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace POWER_System.Data.Migrations
 {
-    public partial class InitialAfterDrop : Migration
+    public partial class EnclosurePartDecoupled : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -440,7 +440,7 @@ namespace POWER_System.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     OrderNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Measure = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<double>(type: "float", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
                     Delivery = table.Column<int>(type: "int", nullable: false),
                     PartOrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -465,14 +465,16 @@ namespace POWER_System.Data.Migrations
                 name: "EnclosurePart",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     PartId = table.Column<int>(type: "int", nullable: false),
                     EnclosureId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    PartTag = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Tag = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quantity = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EnclosurePart", x => new { x.PartId, x.EnclosureId });
+                    table.PrimaryKey("PK_EnclosurePart", x => x.Id);
                     table.ForeignKey(
                         name: "FK_EnclosurePart_Enclosure_EnclosureId",
                         column: x => x.EnclosureId,
@@ -507,6 +509,27 @@ namespace POWER_System.Data.Migrations
                         name: "FK_PartStorage_Storages_StorageId",
                         column: x => x.StorageId,
                         principalTable: "Storages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PartTagsQuantities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EnclosurePartId = table.Column<int>(type: "int", nullable: false),
+                    Tag = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quantity = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PartTagsQuantities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PartTagsQuantities_EnclosurePart_EnclosurePartId",
+                        column: x => x.EnclosurePartId,
+                        principalTable: "EnclosurePart",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -611,6 +634,11 @@ namespace POWER_System.Data.Migrations
                 column: "EnclosureId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EnclosurePart_PartId",
+                table: "EnclosurePart",
+                column: "PartId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Equipment_StorageId",
                 table: "Equipment",
                 column: "StorageId");
@@ -639,6 +667,11 @@ namespace POWER_System.Data.Migrations
                 name: "IX_PartStorage_StorageId",
                 table: "PartStorage",
                 column: "StorageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PartTagsQuantities_EnclosurePartId",
+                table: "PartTagsQuantities",
+                column: "EnclosurePartId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_ApplicationUserId",
@@ -677,13 +710,13 @@ namespace POWER_System.Data.Migrations
                 name: "Cables");
 
             migrationBuilder.DropTable(
-                name: "EnclosurePart");
-
-            migrationBuilder.DropTable(
                 name: "Equipment");
 
             migrationBuilder.DropTable(
                 name: "PartStorage");
+
+            migrationBuilder.DropTable(
+                name: "PartTagsQuantities");
 
             migrationBuilder.DropTable(
                 name: "ProjectSiteService");
@@ -695,10 +728,13 @@ namespace POWER_System.Data.Migrations
                 name: "CablesOrders");
 
             migrationBuilder.DropTable(
-                name: "Parts");
+                name: "EnclosurePart");
 
             migrationBuilder.DropTable(
                 name: "Enclosure");
+
+            migrationBuilder.DropTable(
+                name: "Parts");
 
             migrationBuilder.DropTable(
                 name: "PartsOrders");

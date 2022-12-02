@@ -32,6 +32,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th scope="col">Quantity</th>
                             <th scope="col">Device Tag</th>
                             <th scope="col">Manufacturer</th>
                             <th scope="col">OrderNumber</th>
@@ -42,6 +43,7 @@
                         @foreach (var part in Model.Parts)
                         {
                             <tr>
+                                <td>@part.Quantity</td>
                                 <td>@part.DeviceTag</td>
                                 <td>@part.Manufacturer</td>
                                 <td>@part.OrderNumber</td>
