@@ -80,7 +80,7 @@ namespace POWER_System.Services
                 Status = enclosure.Status,
                 Revision = enclosure.Revision,
                 Comment = enclosure.Comment,
-                ProjectId = enclosure.Id,
+                ProjectId = enclosure.ProjectId,
                 Parts = parts,
             };
 
@@ -104,7 +104,7 @@ namespace POWER_System.Services
                 Status = enclosure.Status,
                 Revision = enclosure.Revision,
                 Comment = enclosure.Comment,
-                ProjectId = enclosure.Id,
+                ProjectId = enclosure.ProjectId,
                 Parts = parts,
             };
 

@@ -78,6 +78,5 @@ namespace POWER_System.Controllers
             return View(model);
         }
 
-
     }
 }
