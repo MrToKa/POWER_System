@@ -21,6 +21,8 @@ public class ProjectServiceModel
 
     public virtual List<EnclosureServiceModel>? Enclosures { get; set; }
 
+    public virtual IEnumerable<PartOrderServiceModel>? PartsOrders { get; set; }
+
     //public virtual IEnumerable<StorageServiceModel> Storages { get; set; }
 
     //public virtual IEnumerable<SiteServiceServiceModel> SiteServices { get; set; }

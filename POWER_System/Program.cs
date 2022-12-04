@@ -22,7 +22,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IApplicationDbRepository, ApplicationDbRepository>()
     .AddScoped<IProjectService, ProjectService>()
     .AddScoped<IEnclosureService, EnclosureService>()
-    .AddScoped<IPartService, PartService>();
+    .AddScoped<IPartService, PartService>()
+    .AddScoped<IOrderService, OrderService>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

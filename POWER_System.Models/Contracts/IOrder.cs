@@ -4,7 +4,7 @@ namespace POWER_System.Models.Contracts;
 
 public interface IOrder
 {
-    Project Project { get; set; }
+    //Project Project { get; set; }
 
     //Enclosure Enclosure { get; set; }
 

@@ -11,28 +11,27 @@ public class PartOrder : IOrder
 {
     public PartOrder()
     {
-        Parts = new HashSet<Part>();
+        Parts = new List<EnclosurePart>();
     }
 
     [Key]
     public Guid Id { get; set; }
 
-    /// <summary>
-    /// Gets or sets the project which the parts are ordered for.
-    /// </summary>
-    [ForeignKey(nameof(Project))]
-    public Guid ProjectId { get; set; }
+    ///// <summary>
+    ///// Gets or sets the project which the parts are ordered for.
+    ///// </summary>
+    //[ForeignKey(nameof(Project))]
+    //public Guid ProjectId { get; set; }
 
-    [Required]
-    public Project Project { get; set; }
+    //[Required]
+    //public Project Project { get; set; }
 
     /// <summary>
     /// Gets or sets the enclosure TAG for which are the parts ordered.
     /// </summary>
-    //[ForeignKey(nameof(Enclosure))]
-    //public string EnclosureId { get; set; }
+    public Guid EnclosureId { get; set; }
 
-    //public Enclosure Enclosure { get; set; }
+    public Enclosure Enclosure { get; set; }
 
     /// <summary>
     /// Gets or sets the order date.
@@ -52,9 +51,11 @@ public class PartOrder : IOrder
     [MaxLength(OrderConstants.CommentMaxLength)]
     public string? Comment { get; set; }
 
-    public bool IsDeleted { get; set; }
+    public DateTime DateCreated { get; set; }
+
+    public bool IsDeleted { get; set; } = false;
 
     public DateTime? DeletedOn { get; set; }
 
-    public virtual IEnumerable<Part> Parts { get; set; }
+    public List<EnclosurePart> Parts { get; set; }
 }

@@ -190,6 +190,23 @@ public class PartService : IPartService
         return parts;
     }
 
+    //public async Task<List<EnclosurePart>> CreatePartsOrder(Guid enclosureId)
+    //{
+    //    var currentParts = repo.All<EnclosurePart>()
+    //        .Include(p => p.Part)
+    //        .Where(e => e.EnclosureId == enclosureId);
+
+    //    foreach (var part in currentParts)
+    //    {
+    //        if (currentParts.Any(x => x.Part.OrderNumber == part.OrderNumber))
+    //        {
+    //            currentParts.First(x => x.Part.OrderNumber == part.OrderNumber).Delivery = part.Delivery;
+    //        }
+    //    }
+
+    //    await repo.SaveChangesAsync();
+    //}
+
     private async Task AddPartToDatabase(PartServiceModel part)
     {
         var dataPart = new Part()

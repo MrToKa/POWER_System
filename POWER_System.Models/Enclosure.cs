@@ -8,9 +8,8 @@ public class Enclosure
 {
     public Enclosure()
     {
-        //Parts = new List<Part>();
-        Cables = new List<Cable>();
         CablesOrders = new List<CableOrder>();
+        PartsOrders = new List<PartOrder>();
     }
 
     [Key]
@@ -54,7 +53,13 @@ public class Enclosure
     [Required]
     public Guid ProjectId { get; set; }
 
-    public virtual Project Project { get; set; }
+    public Project Project { get; set; }
+
+    public DateTime DateCreated { get; set; }
+
+    public bool IsDeleted { get; set; } = false;
+
+    public DateTime? DeletedOn { get; set; }
 
     // TODO: Implement documentation class for the enclosure.
 
@@ -62,7 +67,9 @@ public class Enclosure
 
     public List<EnclosurePart> Parts { get; set; }
 
-    public virtual IEnumerable<Cable> Cables { get; set; }
+    public IEnumerable<Cable> Cables { get; set; }
 
-    public virtual IEnumerable<CableOrder> CablesOrders { get; set; }
+    public IEnumerable<CableOrder> CablesOrders { get; set; }
+
+    public IEnumerable<PartOrder> PartsOrders { get; set; }
 }

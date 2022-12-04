@@ -54,13 +54,6 @@ namespace POWER_System.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Details(EnclosureServiceModel model, Guid id)
-        {
-
-            return View(model);
-        }
-
         [HttpGet]
         public async Task<IActionResult> AddParts(Guid id)
         {

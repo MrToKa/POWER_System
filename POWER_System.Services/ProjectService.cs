@@ -60,7 +60,8 @@ public class ProjectService : IProjectService
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync();
 
-            var enclosures = await enclosureService.GetAllEnclosuresForProjectAsync(id);
+        var enclosures = await enclosureService.GetAllEnclosuresForProjectAsync(id);
+        var orders = await GetAllOrdersForProjectsAsync(id);
 
         return new ProjectServiceModel()
         {
@@ -71,13 +72,14 @@ public class ProjectService : IProjectService
             Name = project.Name,
             Status = project.Status.ToString(),
             Enclosures = (List<EnclosureServiceModel>)enclosures,
+            PartsOrders = orders
         };
     }
 
     public async Task<IEnumerable<ProjectServiceModel>> SearchProjectAsync(string keyword)
     {
-            var projects = await repo.All<Project>()
-                .ToListAsync();
+        var projects = await repo.All<Project>()
+            .ToListAsync();
 
         if (!String.IsNullOrEmpty(keyword))
         {
@@ -102,5 +104,23 @@ public class ProjectService : IProjectService
         }
 
         return projectCollection;
+    }
+
+    public async Task<IEnumerable<PartOrderServiceModel>> GetAllOrdersForProjectsAsync(Guid id)
+    {
+        return await repo.All<PartOrder>()
+            .Where(x => x.Enclosure.ProjectId == id && x.IsDeleted == false)
+            .Select(p => new PartOrderServiceModel
+            {
+                DateCreated = p.DateCreated,
+                Enclosure = p.Enclosure,
+                Comment = p.Comment,
+                EnclosureId = p.EnclosureId,
+                Id = id,
+                OrderDate = p.OrderDate,
+                Status = p.Status,
+            })
+            .OrderByDescending(d => d.DateCreated)
+            .ToListAsync();
     }
 }

@@ -52,7 +52,9 @@ public class CableOrder : IOrder
     [MaxLength(OrderConstants.CommentMaxLength)]
     public string? Comment { get; set; }
 
-    public bool IsDeleted { get; set; }
+    public DateTime DateCreated { get; set; }
+
+    public bool IsDeleted { get; set; } = false;
 
     public DateTime? DeletedOn { get; set; }
 

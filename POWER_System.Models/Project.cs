@@ -54,8 +54,16 @@ namespace POWER_System.Models
         [Required]
         public ProjectStatus Status { get; set; }
 
+        public DateTime DateCreated { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
+
+        public DateTime? DeletedOn { get; set; }
+
         // TODO: Implement documentation class for the project.
         public virtual List<Enclosure> Enclosures { get; set; }
+
+        public virtual List<PartOrder> PartOrders { get; set; }
 
         public virtual List<Storage> Storages { get; set; }
 

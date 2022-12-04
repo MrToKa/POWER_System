@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using POWER_System.Data;
 
@@ -11,9 +12,10 @@ using POWER_System.Data;
 namespace POWER_System.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221203093013_PartOrderModified")]
+    partial class PartOrderModified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -538,9 +540,6 @@ namespace POWER_System.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Delivery")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("EnclosureId")
                         .HasColumnType("uniqueidentifier");
 
@@ -617,8 +616,11 @@ namespace POWER_System.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("EnclosureId")
+                    b.Property<Guid?>("EnclosureId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EnclosureTag")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -626,7 +628,7 @@ namespace POWER_System.Data.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ProjectId")
+                    b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
@@ -942,15 +944,13 @@ namespace POWER_System.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("POWER_System.Models.PartOrder", "PartOrder")
+                    b.HasOne("POWER_System.Models.PartOrder", null)
                         .WithMany("Parts")
                         .HasForeignKey("PartOrderId");
 
                     b.Navigation("Enclosure");
 
                     b.Navigation("Part");
-
-                    b.Navigation("PartOrder");
                 });
 
             modelBuilder.Entity("POWER_System.Models.Equipment", b =>
@@ -962,21 +962,21 @@ namespace POWER_System.Data.Migrations
 
             modelBuilder.Entity("POWER_System.Models.PartOrder", b =>
                 {
-                    b.HasOne("POWER_System.Models.Enclosure", "Enclosure")
+                    b.HasOne("POWER_System.Models.Enclosure", null)
                         .WithMany("PartsOrders")
-                        .HasForeignKey("EnclosureId")
+                        .HasForeignKey("EnclosureId");
+
+                    b.HasOne("POWER_System.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("POWER_System.Models.Project", null)
-                        .WithMany("PartOrders")
-                        .HasForeignKey("ProjectId");
 
                     b.HasOne("POWER_System.Models.Storage", null)
                         .WithMany("PartOrders")
                         .HasForeignKey("StorageId");
 
-                    b.Navigation("Enclosure");
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("POWER_System.Models.PartsQuantity", b =>
@@ -1061,8 +1061,6 @@ namespace POWER_System.Data.Migrations
             modelBuilder.Entity("POWER_System.Models.Project", b =>
                 {
                     b.Navigation("Enclosures");
-
-                    b.Navigation("PartOrders");
 
                     b.Navigation("Storages");
                 });

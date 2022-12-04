@@ -32,8 +32,18 @@
             }
         </div>
         <div class="col">
-            <button type="button" class="btn btn-primary">Add additional order</button><br />
+            @*<form>
+                <button class="btn btn-primary" asp-action="All" asp-controller="Order" asp-route-id="@Model.Id" type="submit">View project orders</button><br />
+            </form>*@
             Orders:
+            <div class="list-group">
+                @foreach (var order in Model.PartsOrders)
+                {
+                    <form>
+                        <button type="submit" class="list-group-item list-group-item-action" asp-action="Details" asp-controller="Enclosure" asp-route-id="@order.Id">@order.DateCreated -> @order.Enclosure.Tag</button>
+                    </form>
+                }
+            </div>
         </div>
         <div class="col">
             <button type="button" class="btn btn-primary">Add new storage location</button><br />

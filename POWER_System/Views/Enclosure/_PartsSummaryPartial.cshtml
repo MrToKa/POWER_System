@@ -17,6 +17,7 @@
                             <th scope="col">Manufacturer</th>
                             <th scope="col">OrderNumber</th>
                             <th scope="col">Description</th>
+                            @*<th scope="col">Delivery</th>*@
                         </tr>
                     </thead>
                     <tbody>
@@ -27,6 +28,9 @@
                                 <td>@part.Manufacturer</td>
                                 <td>@part.OrderNumber</td>
                                 <td>@part.Description</td>
+@*                                <td>
+                                <select class="form-select" aria-label="Delivery" asp-items="@Html.GetEnumSelectList<OrderDelivery>()"></select>
+                                </td>*@
                             </tr>
                         }
                     </tbody>
