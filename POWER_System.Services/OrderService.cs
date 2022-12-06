@@ -23,6 +23,7 @@ public class OrderService : IOrderService
         {
             DateCreated = DateTime.Now,
             EnclosureId = model.EnclosureId,
+            Comment = model.Comment,
         };
 
         await repo.AddAsync(order);
@@ -33,13 +34,16 @@ public class OrderService : IOrderService
     {
         var currentParts = repo.All<EnclosurePart>()
             .Include(p => p.Part)
-            .Where(e => e.EnclosureId == enclosureId);
+            .Where(e => e.EnclosureId == enclosureId && e.Quantity > 0);
+
+        var orderId = repo.All<PartOrder>()
+            .FirstOrDefaultAsync(x => x.EnclosureId == enclosureId).Result.Id;
 
         List<EnclosurePart> modifiedParts = new List<EnclosurePart>();
 
         foreach (var part in currentParts)
         {
-            //part.PartOrderId = orderId;
+            part.PartOrderId = orderId;
             modifiedParts.Add(part);
         }
 

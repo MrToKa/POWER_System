@@ -48,8 +48,8 @@ namespace POWER_System.Controllers
             }
             try
             {
-                await orderService.AddOrderAsync(model);
-                //model.Parts = await orderService.CreatePartsOrder(model.EnclosureId);
+                //await orderService.AddOrderAsync(model);
+                model.Parts = await orderService.CreatePartsOrder(model.EnclosureId);
 
                 return RedirectToAction("Details", "Enclosure", new {id = model.EnclosureId});
             }
