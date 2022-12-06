@@ -17,17 +17,17 @@ public class OrderService : IOrderService
         repo = _repo;
         partService = _partService;
     }
-    public async Task AddOrderAsync(PartOrderServiceModel model)
+    public async Task AddOrderAsync(List<PartServiceModel> model)
     {
-        var order = new PartOrder()
-        {
-            DateCreated = DateTime.Now,
-            EnclosureId = model.EnclosureId,
-            Comment = model.Comment,
-        };
+        //var order = new PartOrder()
+        //{
+        //    DateCreated = DateTime.Now,
+        //    EnclosureId = model.EnclosureId,
+        //    Comment = model.Comment,
+        //};
 
-        await repo.AddAsync(order);
-        await repo.SaveChangesAsync();
+        //await repo.AddAsync(order);
+        //await repo.SaveChangesAsync();
     }
 
     public async Task<List<EnclosurePart>> CreatePartsOrder(Guid enclosureId)

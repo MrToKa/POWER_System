@@ -136,5 +136,16 @@ namespace POWER_System.Services
 
             return specificEnclosure;
         }
+
+        public async Task <List<EnclosurePart>> ManagePartsForOrder(Guid enclosureId)
+        {
+            var enclosure = await repo.All<Enclosure>()
+                .Include(p => p.Parts)
+                .FirstOrDefaultAsync(e => e.Id == enclosureId);
+
+            //var parts = 
+
+            throw new NotImplementedException();
+        }
     }
 }

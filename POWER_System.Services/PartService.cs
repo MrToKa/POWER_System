@@ -25,7 +25,7 @@ public class PartService : IPartService
         var enclosure = await repo.All<EnclosurePart>()
             .Include(p => p.Part)
             .ThenInclude(p => p.Parts)
-            .Where(e => e.EnclosureId == enclosureId).ToListAsync();
+            .Where(e => e.EnclosureId == enclosureId & e.Quantity > 0).ToListAsync();
 
         List<PartServiceModel> parts = new List<PartServiceModel>();
 
@@ -256,4 +256,12 @@ public class PartService : IPartService
         await repo.SaveChangesAsync();
     }
 
+    public async Task<List<EnclosurePart>> EditPartsDeliveryFromOrder(List<PartServiceModel> model)
+    {
+        //var parts = await repo.All<EnclosurePart>()
+        //    .Include(p => p.Part)
+        //    .Where(e => e.EnclosureId == enclosureId && e.Quantity > 0).ToListAsync();
+
+        throw new NotImplementedException();
+    }
 }

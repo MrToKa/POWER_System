@@ -6,7 +6,7 @@ public class PartServiceModel
 {
     public int Id { get; set; }
 
-    public string DeviceTag { get; set; } = null!;
+    public string? DeviceTag { get; set; }
 
     public string Manufacturer { get; set; } = null!;
 

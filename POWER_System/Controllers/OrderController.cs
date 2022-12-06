@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using POWER_System.Models;
 using POWER_System.Services;
 using POWER_System.Services.Contracts;
 using POWER_System.Services.Models;
@@ -10,14 +11,17 @@ namespace POWER_System.Controllers
         private readonly IProjectService projectService;
         private readonly IEnclosureService enclosureService;
         private readonly IOrderService orderService;
+        private readonly IPartService partService;
 
         public OrderController(IProjectService _projectService,
             IOrderService _orderService,
-            IEnclosureService _enclosureService)
+            IEnclosureService _enclosureService,
+            IPartService _partService)
         {
             projectService = _projectService;
             orderService = _orderService;
             enclosureService = _enclosureService;
+            partService = _partService;
         }
 
         [HttpGet]
@@ -28,30 +32,38 @@ namespace POWER_System.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add(EnclosureServiceModel modelId)
+        public async Task<IActionResult> Add(EnclosureServiceModel modelId)
         {
+            var model = await partService.GetSummarizedPartsForEnclosuresAsync(modelId.Id);
 
+            //var model = new PartOrderServiceModel()
+            //{
+            //    EnclosureId = modelId.Id
+            //};
 
-            var model = new PartOrderServiceModel()
-            {
-                EnclosureId = modelId.Id
-            };
-            return View(model);
+            TempData["EnclosureId"] = modelId.Id;
+            TempData.Keep();
+
+            return View(model.ToList());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(PartOrderServiceModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(List<PartServiceModel> model)
         {
+            TempData.Keep();
+            Guid enclosureId = (Guid)TempData.Peek("EnclosureId");
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
             try
             {
-                //await orderService.AddOrderAsync(model);
-                model.Parts = await orderService.CreatePartsOrder(model.EnclosureId);
+                //await orderService.AddOrderAsync(model, enclosureId);
+                //model.Parts = await orderService.CreatePartsOrder(enclosureId);
 
-                return RedirectToAction("Details", "Enclosure", new {id = model.EnclosureId});
+                return RedirectToAction("Details", "Enclosure", new { id = enclosureId });
             }
             catch (Exception)
             {
