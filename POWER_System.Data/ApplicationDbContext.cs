@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using POWER_System.Models;
+using System.Reflection.Emit;
 
 namespace POWER_System.Data
 {
@@ -33,23 +34,29 @@ namespace POWER_System.Data
 
         public DbSet<PartsQuantity> PartTagsQuantities { get; set; }
 
+        public DbSet<EnclosurePartOrder> EnclosurePartOrders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            
+
             builder.Entity<Part>().HasKey(q => q.Id);
             builder.Entity<Enclosure>().HasKey(q => q.Id);
-            //builder.Entity<EnclosurePart>()
-            //    .HasKey(q => new {q.PartId, q.EnclosureId});
-            
+
             builder.Entity<EnclosurePart>()
-                .HasKey(i => i.Id);
+            .HasKey(i => i.Id);
 
-            //builder.Entity<EnclosurePart>(entity =>
-            //    entity.HasMany(p => p.PartsQuantity)
-            //        .WithOne(e => e.EnclosurePart)
-            //        .OnDelete(DeleteBehavior.Restrict));
+            builder.Entity<EnclosurePartOrder>()
+                .HasKey(bc => new { bc.EnclosurePartId, bc.PartOrderId });
 
+            builder.Entity<EnclosurePartOrder>()
+                .HasOne(o => o.PartOrder)
+                .WithMany(o => o.EnclosureParts)
+                .HasForeignKey(o => o.PartOrderId);
+
+            builder.Entity<EnclosurePartOrder>()
+                .HasOne(o => o.EnclosurePart)
+                .WithMany(o => o.EnclosureParts)
+                .HasForeignKey(o => o.EnclosurePartId);
 
             builder.Entity<EnclosurePart>(entity =>
             {

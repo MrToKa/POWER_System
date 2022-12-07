@@ -108,7 +108,7 @@ public class ProjectService : IProjectService
 
     public async Task<IEnumerable<PartOrderServiceModel>> GetAllOrdersForProjectsAsync(Guid id)
     {
-        return await repo.All<PartOrder>()
+        return await repo.All<PartOrder>()            
             .Where(x => x.Enclosure.ProjectId == id && x.IsDeleted == false)
             .Select(p => new PartOrderServiceModel
             {
@@ -118,7 +118,7 @@ public class ProjectService : IProjectService
                 Comment = p.Comment,
                 EnclosureId = p.EnclosureId,              
                 OrderDate = p.OrderDate,
-                Status = p.Status,
+                Status = p.Status,              
             })
             .OrderByDescending(d => d.DateCreated)
             .ToListAsync();

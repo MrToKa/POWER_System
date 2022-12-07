@@ -9,11 +9,6 @@ namespace POWER_System.Models;
 
 public class PartOrder : IOrder
 {
-    public PartOrder()
-    {
-        Parts = new List<EnclosurePart>();
-    }
-
     [Key]
     public Guid Id { get; set; }
 
@@ -57,5 +52,5 @@ public class PartOrder : IOrder
 
     public DateTime? DeletedOn { get; set; }
 
-    public List<EnclosurePart> Parts { get; set; }
+    public List<EnclosurePartOrder> EnclosureParts { get; set; }
 }

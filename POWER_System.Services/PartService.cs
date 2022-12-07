@@ -103,8 +103,7 @@ public class PartService : IPartService
 
         foreach (var part in model)
         {
-
-            var partON = part.OrderNumber;
+            string partON = part.OrderNumber;
             string partTag = part.DeviceTag;
             double quantity = part.Quantity;
 

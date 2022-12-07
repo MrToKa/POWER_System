@@ -9,5 +9,5 @@ public interface IOrderService
 
     Task CreatePartsOrder(List<PartServiceModel> model, Guid enclosureId);
 
-    Task<List<PartServiceModel>> GetOrderAsync(Guid id);
+    Task<List<PartServiceModel>> GetOrderAsync(Guid id, string order);
 }

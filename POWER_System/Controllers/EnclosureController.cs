@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using POWER_System.Models;
 using POWER_System.Services;
 using POWER_System.Services.Contracts;
 using POWER_System.Services.Models;
@@ -55,6 +56,14 @@ namespace POWER_System.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> EnclosureFullDetails(Guid id)
+        {
+            var model = await enclosureService.EnclosureFullDetails(id);
+
+            return View(model);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> AddParts(Guid id)
         {
             var model = await enclosureService.EnclosureFullDetails(id);
@@ -68,7 +77,7 @@ namespace POWER_System.Controllers
             var model = await enclosureService.AddPartsToEnclosure(id, file);
             await partService.AssignPartsToEnclosure(model.Parts, id);
 
-            return View(model);
+            return RedirectToAction("EnclosureFullDetails", new { id = id });
         }
 
     }

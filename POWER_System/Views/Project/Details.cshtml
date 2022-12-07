@@ -12,7 +12,8 @@
     <div class="row align-items-start">
         <div class="col">
             <form>
-                <button class="btn btn-primary" asp-action="Add" asp-controller="Enclosure" asp-route-id="@Model.Id" type="submit">Add new cabinet/enclosure</button><br />
+                <button class="btn btn-primary" asp-action="Add" asp-controller="Enclosure" 
+                asp-route-id="@Model.Id" type="submit">Add new cabinet/enclosure</button><br />
             </form>
             Cabinets/Enclosures:<br />
             @if (Model.Enclosures?.Count() == 0)
@@ -25,23 +26,27 @@
                     @foreach (var enclosure in Model.Enclosures)
                     {
                         <form>
-                            <button type="submit" class="list-group-item list-group-item-action" asp-action="Details" asp-controller="Enclosure" asp-route-id="@enclosure.Id">@enclosure.Tag</button>
+                            <button type="submit" class="list-group-item list-group-item-action" asp-action="Details" 
+                            asp-controller="Enclosure" asp-route-id="@enclosure.Id">@enclosure.Tag</button>
                         </form>
                     }
                 </div>
             }
         </div>
         <div class="col">
-            @*<form>
-                <button class="btn btn-primary" asp-action="All" asp-controller="Order" asp-route-id="@Model.Id" type="submit">View project orders</button><br />
-            </form>*@
+            <form>
+                <button class="btn btn-primary" asp-action="All" asp-controller="Order" 
+                asp-route-id="@Model.Id" type="submit">Modify Project orders</button><br />
+            </form>
             Orders:
             <div class="list-group">
                 @foreach (var order in Model.PartsOrders)
                 {
                     <form>
                         <button type="submit" name="orderId" value="@order.Id" class="list-group-item list-group-item-action"
-                            asp-action="Details" asp-controller="Order" >@order.DateCreated -> @order.Enclosure.Tag</button>
+                            asp-action="Details" asp-controller="Order" asp-route-id="@order.EnclosureId">
+                            @order.DateCreated -> @order.Enclosure.Tag
+                        </button>
                     </form>
                 }
             </div>

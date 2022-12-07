@@ -17,49 +17,14 @@
     <input type="hidden" asp-for="@Model.Id" class="form-control" value="@Context.GetRouteData().Values["id"]" />
 </form>
 
-<div class="container text-center">
-    <div class="row align-items-start">
-        <div class="col">
-            <h3>@ViewBag.Title:</h3><br />
-            @if (Model.Parts?.Count() == 0)
-            {
-                <text>No parts or cables for this Enclosure/Cabinet</text>
-            }
-            else
-            {
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Device Tag</th>
-                            <th scope="col">Manufacturer</th>
-                            <th scope="col">OrderNumber</th>
-                            <th scope="col">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var part in Model.Parts)
-                        {
-                            <tr>
-                                <td>@part.Quantity</td>
-                                <td>@part.DeviceTag</td>
-                                <td>@part.Manufacturer</td>
-                                <td>@part.OrderNumber</td>
-                                <td>@part.Description</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-        </div>
-    </div>
-</div>
+<partial name="_PartsPartial" model="@Model" />
 
 <div class="container text-center">
     <div class="row align-items-start">
         <div class="col">
             <form method="get">
-                <button class="btn btn-primary" name="input" asp-action="Details" asp-controller="Enclosure" asp-route-id="@Model.Id" type="submit">Back to detailed view</button><br />
+                <button class="btn btn-primary" name="input" asp-action="Details" asp-controller="Enclosure" 
+                asp-route-id="@Model.Id" type="submit">Back to detailed view</button><br />
             </form>
         </div>
     </div>

@@ -33,7 +33,7 @@
                                     <td>
                                         @Html.Hidden("model[" + @i + "].PartId", Model[@i].PartId)
                                         @Html.Hidden("model[" + @i + "].Id", Model[@i].Id)
-                                        @Html.Hidden("model[" + @i + "].PartOrderId", Model[@i].PartOrderId)
+                                        @*@Html.Hidden("model[" + @i + "].PartOrder.Id", Model[@i].PartOrder.Id)*@
                                         @Html.DropDownList("model[" + @i + "].Delivery",
                             @Html.GetEnumSelectList<OrderDelivery>())
                                         @*<select class="form-select" name="delivery" aria-label="Delivery" asp-items="@Html.GetEnumSelectList<OrderDelivery>()"></select>*@

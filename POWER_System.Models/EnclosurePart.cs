@@ -23,9 +23,8 @@ public class EnclosurePart
 
     public double Quantity { get; set; }
 
-    public Guid? PartOrderId { get; set; }
-
-    public PartOrder PartOrder { get; set; }
-
     public OrderDelivery Delivery { get; set; }   
+
+    public List<EnclosurePartOrder> EnclosureParts { get; set; }
+
 }

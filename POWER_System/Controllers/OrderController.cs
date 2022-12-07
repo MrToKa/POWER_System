@@ -36,11 +36,6 @@ namespace POWER_System.Controllers
         {
             var model = await partService.GetSummarizedPartsForEnclosuresAsync(modelId.Id);
 
-            //var model = new PartOrderServiceModel()
-            //{
-            //    EnclosureId = modelId.Id
-            //};
-
             TempData["EnclosureId"] = modelId.Id;
             TempData.Keep();
 
@@ -51,7 +46,7 @@ namespace POWER_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(List<PartServiceModel> model)
         {
-            TempData.Keep();
+            //TempData.Keep();
             Guid enclosureId = (Guid)TempData.Peek("EnclosureId");
 
             if (!ModelState.IsValid)
@@ -59,11 +54,11 @@ namespace POWER_System.Controllers
                 return View(model);
             }
             try
-            {
+            {                
                 await orderService.AddOrderAsync(enclosureId);
                 await orderService.CreatePartsOrder(model, enclosureId);
 
-                return RedirectToAction("Details", "Order", new { id = enclosureId });
+                return RedirectToAction("Details", "Enclosure", new { id = enclosureId });
             }
             catch (Exception)
             {
@@ -74,9 +69,9 @@ namespace POWER_System.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(string orderId)
+        public async Task<IActionResult> Details(Guid id, string orderId)
         {
-            var model = await orderService.GetOrderAsync(Guid.Parse(orderId));
+            var model = await orderService.GetOrderAsync(id, orderId);
 
             return View(model.ToList());
         }

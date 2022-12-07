@@ -1,0 +1,28 @@
+﻿@model EnclosureServiceModel
+
+@{
+    ViewBag.Title = $"Enclosure {Model.Tag} Parts details";
+}
+
+<div class="container text-center">
+    <div class="row align-items-start">
+        <div class="col">
+            <form method="get">
+                <button class="btn btn-primary" name="input" asp-action="Details"
+                        asp-controller="Enclosure" asp-route-id="@Model.Id" type="submit">
+                    Back to detailed view
+                </button><br />
+            </form>
+        </div>
+        <div class="col">
+            <form method="get">
+                <button class="btn btn-primary" asp-action="Add" asp-controller="Order"
+                        asp-route-id="@Model.Id" type="submit">
+                    Create order for parts delivery
+                </button><br />
+            </form>
+        </div>
+    </div>
+</div>
+
+<partial name="_PartsPartial" model="@Model" />

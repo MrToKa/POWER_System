@@ -58,7 +58,7 @@ namespace POWER_System.Services
                     Status = p.Status,
                     Revision = p.Revision,
                     Comment = p.Comment,
-                    ProjectId = p.Id
+                    ProjectId = p.ProjectId
                 }).ToListAsync();
         }
 

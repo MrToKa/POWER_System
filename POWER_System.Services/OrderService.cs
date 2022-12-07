@@ -3,7 +3,9 @@ using POWER_System.Data.Repositories;
 using POWER_System.Models;
 using POWER_System.Services.Contracts;
 using POWER_System.Services.Models;
+using System.Security.Cryptography.X509Certificates;
 using static POWER_System.Models.Enum.OrderStatus;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace POWER_System.Services;
 
@@ -28,13 +30,14 @@ public class OrderService : IOrderService
         };
 
         await repo.AddAsync(order);
-        await repo.SaveChangesAsync();
+        await repo.SaveChangesAsync();        
     }
 
     public async Task CreatePartsOrder(List<PartServiceModel> model, Guid enclosureId)
     {
         var currentParts = repo.All<EnclosurePart>()
             .Include(p => p.Part)
+            .Include(p => p.EnclosureParts)
             .Where(e => e.EnclosureId == enclosureId && e.Quantity > 0);
 
         Guid orderId = (await repo.All<PartOrder>()
@@ -46,44 +49,55 @@ public class OrderService : IOrderService
             foreach (var enclosurePart in currentParts.Where(x => x.Part.OrderNumber == modelPart.OrderNumber))
             {
                 enclosurePart.Delivery = modelPart.Delivery;
-                enclosurePart.PartOrderId = orderId;
-            }
 
+                enclosurePart.EnclosureParts.Add(new EnclosurePartOrder()
+                {
+                   EnclosurePartId = enclosurePart.Id,
+                   PartOrderId = orderId,
+                   Delivery = modelPart.Delivery,
+                   Quantity = enclosurePart.Quantity,                  
+                });          
+            }
         }
-        await repo.SaveChangesAsync();       
+
+        await repo.SaveChangesAsync();
     }
 
-    public async Task<List<PartServiceModel>> GetOrderAsync(Guid orderId)
+    public async Task<List<PartServiceModel>> GetOrderAsync(Guid enclosureId, string orderId)
     {
-        var enclosure = await repo.All<EnclosurePart>()
+        var enclosureParts = await repo.All<EnclosurePart>()
+            .Include(p => p.EnclosureParts)
             .Include(p => p.Part)
-            .ThenInclude(p => p.Parts)
-            .Where(e => e.PartOrderId == orderId && e.Quantity > 0).ToListAsync();
+            .ThenInclude(p => p.Parts)            
+            .Where(e => e.EnclosureId == enclosureId)
+            .ToListAsync();
 
-        List<PartServiceModel> parts = new List<PartServiceModel>();
+        List <PartServiceModel> parts = new List<PartServiceModel>();
 
-        foreach (var enclosurePart in enclosure)
+        foreach (var enclosurePart in enclosureParts)
         {
-            string OrderNumber = enclosurePart.Part.OrderNumber;
-            double Quantity = enclosurePart.Quantity;
-
-            var part = new PartServiceModel()
+            if (enclosurePart.EnclosureParts.Any(x => x.PartOrderId.ToString() == orderId))
             {
-                Manufacturer = enclosurePart.Part.Manufacturer,
-                OrderNumber = OrderNumber,
-                Description = enclosurePart.Part.Description,
-                Delivery = enclosurePart.Delivery,
-                Quantity = enclosurePart.Quantity,
-            };
+                var delivery = enclosurePart.EnclosureParts.First(x => x.PartOrderId.ToString() == orderId).Delivery;
+                double quantity = enclosurePart.EnclosureParts.First(x => x.PartOrderId.ToString() == orderId).Quantity;
 
+                var part = new PartServiceModel()
+                {
+                    Manufacturer = enclosurePart.Part.Manufacturer,
+                    OrderNumber = enclosurePart.Part.OrderNumber,
+                    Description = enclosurePart.Part.Description,
+                    Delivery = delivery,
+                    Quantity = quantity
+                };
 
-            if (parts.Any(o => o.OrderNumber == OrderNumber))
-            {
-                parts.First(o => o.OrderNumber == OrderNumber).Quantity += Quantity;
-            }
-            else
-            {
-                parts.Add(part);
+                if (parts.Any(t => t.OrderNumber == enclosurePart.Part.OrderNumber))
+                {
+                    parts.First(o => o.OrderNumber == enclosurePart.Part.OrderNumber).Quantity += quantity;
+                }
+                else
+                {
+                    parts.Add(part);
+                }
             }
         }
 

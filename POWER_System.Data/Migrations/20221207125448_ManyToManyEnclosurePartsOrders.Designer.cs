@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using POWER_System.Data;
 
@@ -11,9 +12,10 @@ using POWER_System.Data;
 namespace POWER_System.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221207125448_ManyToManyEnclosurePartsOrders")]
+    partial class ManyToManyEnclosurePartsOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -570,12 +572,6 @@ namespace POWER_System.Data.Migrations
 
                     b.Property<Guid>("PartOrderId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Delivery")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
 
                     b.HasKey("EnclosurePartId", "PartOrderId");
 
