@@ -14,7 +14,7 @@ public interface IPartService
 
     Task<List<PartServiceModel>> AddPartsFromFile(IFormFile file, Guid enclosureId);
 
-    Task<List<EnclosurePart>> EditPartsDeliveryFromOrder(List<PartServiceModel> model);
+    //Task EditPartsDeliveryFromOrder(List<PartServiceModel> model);
 
 
 }

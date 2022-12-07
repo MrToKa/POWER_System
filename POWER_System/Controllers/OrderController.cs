@@ -60,10 +60,10 @@ namespace POWER_System.Controllers
             }
             try
             {
-                //await orderService.AddOrderAsync(model, enclosureId);
-                //model.Parts = await orderService.CreatePartsOrder(enclosureId);
+                await orderService.AddOrderAsync(enclosureId);
+                await orderService.CreatePartsOrder(model, enclosureId);
 
-                return RedirectToAction("Details", "Enclosure", new { id = enclosureId });
+                return RedirectToAction("Details", "Order", new { id = enclosureId });
             }
             catch (Exception)
             {
@@ -73,20 +73,20 @@ namespace POWER_System.Controllers
             return View(model);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> AddOrder(Guid id)
-        //{
-        //    var model = await enclosureService.EnclosureSummarizedDetails(id);
+        [HttpGet]
+        public async Task<IActionResult> Details(string orderId)
+        {
+            var model = await orderService.GetOrderAsync(Guid.Parse(orderId));
 
-        //    return View(model);
-        //}
+            return View(model.ToList());
+        }
 
         //[HttpPost]
         //public async Task<IActionResult> AddPartsToOrder(Guid id)
         //{
         //    var model = await enclosureService.EnclosureSummarizedDetails(id);
         //    await orderService.CreatePartsOrder(model.Parts, id);
-            
+
         //    return View(model);
         //}
     }

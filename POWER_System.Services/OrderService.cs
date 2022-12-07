@@ -3,6 +3,7 @@ using POWER_System.Data.Repositories;
 using POWER_System.Models;
 using POWER_System.Services.Contracts;
 using POWER_System.Services.Models;
+using static POWER_System.Models.Enum.OrderStatus;
 
 namespace POWER_System.Services;
 
@@ -17,57 +18,76 @@ public class OrderService : IOrderService
         repo = _repo;
         partService = _partService;
     }
-    public async Task AddOrderAsync(List<PartServiceModel> model)
+    public async Task AddOrderAsync(Guid enclosureId)
     {
-        //var order = new PartOrder()
-        //{
-        //    DateCreated = DateTime.Now,
-        //    EnclosureId = model.EnclosureId,
-        //    Comment = model.Comment,
-        //};
+        var order = new PartOrder()
+        {
+            DateCreated = DateTime.Now,
+            EnclosureId = enclosureId,
+            Status = InReview,
+        };
 
-        //await repo.AddAsync(order);
-        //await repo.SaveChangesAsync();
+        await repo.AddAsync(order);
+        await repo.SaveChangesAsync();
     }
 
-    public async Task<List<EnclosurePart>> CreatePartsOrder(Guid enclosureId)
+    public async Task CreatePartsOrder(List<PartServiceModel> model, Guid enclosureId)
     {
         var currentParts = repo.All<EnclosurePart>()
             .Include(p => p.Part)
             .Where(e => e.EnclosureId == enclosureId && e.Quantity > 0);
 
-        var orderId = repo.All<PartOrder>()
-            .FirstOrDefaultAsync(x => x.EnclosureId == enclosureId).Result.Id;
+        Guid orderId = (await repo.All<PartOrder>()
+            .OrderByDescending(d => d.DateCreated)
+            .FirstOrDefaultAsync(x => x.EnclosureId == enclosureId)).Id;
 
-        List<EnclosurePart> modifiedParts = new List<EnclosurePart>();
-
-        foreach (var part in currentParts)
+        foreach (var modelPart in model)
         {
-            part.PartOrderId = orderId;
-            modifiedParts.Add(part);
+            foreach (var enclosurePart in currentParts.Where(x => x.Part.OrderNumber == modelPart.OrderNumber))
+            {
+                enclosurePart.Delivery = modelPart.Delivery;
+                enclosurePart.PartOrderId = orderId;
+            }
+
         }
-
-        await repo.SaveChangesAsync();
-
-        return modifiedParts;
+        await repo.SaveChangesAsync();       
     }
 
+    public async Task<List<PartServiceModel>> GetOrderAsync(Guid orderId)
+    {
+        var enclosure = await repo.All<EnclosurePart>()
+            .Include(p => p.Part)
+            .ThenInclude(p => p.Parts)
+            .Where(e => e.PartOrderId == orderId && e.Quantity > 0).ToListAsync();
 
-    //public async Task CreatePartsOrder(IEnumerable<PartServiceModel> model, Guid enclosureId)
-    //{
-    //    var currentParts = repo.All<EnclosurePart>()
-    //        .Include(p => p.Part)
-    //        .Where(e => e.EnclosureId == enclosureId);
+        List<PartServiceModel> parts = new List<PartServiceModel>();
 
-    //    foreach (var part in model)
-    //    {
-    //        if (currentParts.Any(x => x.Part.OrderNumber == part.OrderNumber))
-    //        {
-    //            currentParts.First(x => x.Part.OrderNumber == part.OrderNumber).Delivery = part.Delivery;
-    //        }
-    //    }
+        foreach (var enclosurePart in enclosure)
+        {
+            string OrderNumber = enclosurePart.Part.OrderNumber;
+            double Quantity = enclosurePart.Quantity;
 
-    //    await repo.SaveChangesAsync();
-    //}
+            var part = new PartServiceModel()
+            {
+                Manufacturer = enclosurePart.Part.Manufacturer,
+                OrderNumber = OrderNumber,
+                Description = enclosurePart.Part.Description,
+                Delivery = enclosurePart.Delivery,
+                Quantity = enclosurePart.Quantity,
+            };
+
+
+            if (parts.Any(o => o.OrderNumber == OrderNumber))
+            {
+                parts.First(o => o.OrderNumber == OrderNumber).Quantity += Quantity;
+            }
+            else
+            {
+                parts.Add(part);
+            }
+        }
+
+        return parts.Where(q => q.Quantity > 0).ToList();
+    }
 
 }

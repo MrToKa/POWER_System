@@ -5,8 +5,9 @@ namespace POWER_System.Services.Contracts;
 
 public interface IOrderService
 {
-    Task AddOrderAsync(List<PartServiceModel> model);
+    Task AddOrderAsync(Guid enclosureId);
 
-    Task<List<EnclosurePart>> CreatePartsOrder(Guid enclosureId);
+    Task CreatePartsOrder(List<PartServiceModel> model, Guid enclosureId);
 
+    Task<List<PartServiceModel>> GetOrderAsync(Guid id);
 }

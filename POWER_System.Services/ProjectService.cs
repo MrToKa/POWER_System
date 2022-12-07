@@ -112,11 +112,11 @@ public class ProjectService : IProjectService
             .Where(x => x.Enclosure.ProjectId == id && x.IsDeleted == false)
             .Select(p => new PartOrderServiceModel
             {
+                Id = p.Id,
                 DateCreated = p.DateCreated,
                 Enclosure = p.Enclosure,
                 Comment = p.Comment,
-                EnclosureId = p.EnclosureId,
-                Id = id,
+                EnclosureId = p.EnclosureId,              
                 OrderDate = p.OrderDate,
                 Status = p.Status,
             })
