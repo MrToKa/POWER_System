@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using POWER_System.Areas.Admin.Services;
+using POWER_System.Areas.Admin.Services.Contracts;
 using POWER_System.Data;
 using POWER_System.Data.Repositories;
 using POWER_System.Models;
@@ -31,7 +33,8 @@ builder.Services.AddScoped<IApplicationDbRepository, ApplicationDbRepository>()
     .AddScoped<IProjectService, ProjectService>()
     .AddScoped<IEnclosureService, EnclosureService>()
     .AddScoped<IPartService, PartService>()
-    .AddScoped<IOrderService, OrderService>();
+    .AddScoped<IOrderService, OrderService>()
+    .AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>

@@ -16,6 +16,7 @@ namespace POWER_System.Models
             Enclosures = new List<Enclosure>();
             Storages = new List<Storage>();
             SiteServices = new List<SiteService>();
+            UserProjects = new List<UserProject>();
         }
 
         public Guid Id { get; set; }
@@ -68,5 +69,7 @@ namespace POWER_System.Models
         public virtual List<Storage> Storages { get; set; }
 
         public virtual List<SiteService> SiteServices { get; set; }
+
+        public List<UserProject> UserProjects { get; set; }
     }
 }

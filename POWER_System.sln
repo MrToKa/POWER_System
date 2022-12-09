@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POWER_System.Services", "PO
 		{FF501AD5-5048-46D0-B778-F9938C873626} = {FF501AD5-5048-46D0-B778-F9938C873626}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POWER_System.Models", "POWER_System.Models\POWER_System.Models.csproj", "{FF501AD5-5048-46D0-B778-F9938C873626}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POWER_System.Models", "POWER_System.Models\POWER_System.Models.csproj", "{FF501AD5-5048-46D0-B778-F9938C873626}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POWER_System.Tests", "POWER_System.Tests\POWER_System.Tests.csproj", "{B053E524-24A9-4291-98F0-C1B5F8E00107}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{FF501AD5-5048-46D0-B778-F9938C873626}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF501AD5-5048-46D0-B778-F9938C873626}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF501AD5-5048-46D0-B778-F9938C873626}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B053E524-24A9-4291-98F0-C1B5F8E00107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B053E524-24A9-4291-98F0-C1B5F8E00107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B053E524-24A9-4291-98F0-C1B5F8E00107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B053E524-24A9-4291-98F0-C1B5F8E00107}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

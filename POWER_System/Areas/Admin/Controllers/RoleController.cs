@@ -7,9 +7,9 @@ namespace POWER_System.Areas.Admin.Controllers
     {
         RoleManager<IdentityRole> roleManager;
 
-        public RoleController(RoleManager<IdentityRole> roleManager)
+        public RoleController(RoleManager<IdentityRole> _roleManager)
         {
-            this.roleManager = roleManager;
+            roleManager = _roleManager;
         }
 
         [HttpGet]

@@ -36,6 +36,8 @@ namespace POWER_System.Data
 
         public DbSet<EnclosurePartOrder> EnclosurePartOrders { get; set; }
 
+        public DbSet<UserProject> UserProjects { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
@@ -57,6 +59,19 @@ namespace POWER_System.Data
                 .HasOne(o => o.EnclosurePart)
                 .WithMany(o => o.EnclosureParts)
                 .HasForeignKey(o => o.EnclosurePartId);
+
+            builder.Entity<UserProject>()
+    .HasKey(k => new { k.ProjectId, k.UserId });
+
+            builder.Entity<UserProject>()
+                .HasOne(o => o.User)
+                .WithMany(o => o.PersonalProjects)
+                .HasForeignKey(o => o.UserId);
+
+            builder.Entity<UserProject>()
+                .HasOne(o => o.Project)
+                .WithMany(o => o.UserProjects)
+                .HasForeignKey(o => o.ProjectId);
 
             builder.Entity<EnclosurePart>(entity =>
             {

@@ -46,8 +46,6 @@ public class ApplicationUserController : Controller
             FirstName = model.FirstName,
             LastName = model.LastName,
             OfficeLocation = model.OfficeLocation,
-            Department = model.Department,
-            Position = model.Position,
             CreatedOn = DateTime.Now,
         };
 
