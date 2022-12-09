@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using POWER_System.Areas.Admin.Models;
 using POWER_System.Areas.Admin.Services.Contracts;
 using POWER_System.Models;
+using System.Web.Mvc;
 
 namespace POWER_System.Areas.Admin.Controllers
 {
@@ -36,6 +38,8 @@ namespace POWER_System.Areas.Admin.Controllers
             return View(users);
         }
 
+
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         public async Task<IActionResult> Roles(string id)
         {
             var user = await userService.GetUserById(id);
@@ -43,22 +47,22 @@ namespace POWER_System.Areas.Admin.Controllers
             {
                 UserId = user.Id,
                 UserName = user.UserName,
-                FullName = $"{user.FirstName} {user.LastName}"                
+                FullName = $"{user.FirstName} {user.LastName}"
             };
 
             ViewBag.RoleItems = roleManager.Roles
-                .ToList();
-                //.Select(r => new SelectListItem()
-                //{
-                //    Text = r.Name,
-                //    Value = r.Name,
-                //    Selected = userManager.IsInRoleAsync(user, r.Name).Result
-                //}).ToList();
+                            .ToList()
+                            .Select(r => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
+                            {
+                                Text = r.Name,
+                                Value = r.Name,
+                                Selected = userManager.IsInRoleAsync(user, r.Name).Result
+                            }).ToList();
 
             return View(model);
         }
 
-        [HttpPost]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
         public async Task<IActionResult> Roles(UserRolesViewModel model)
         {
             var user = await userService.GetUserById(model.UserId);
@@ -80,7 +84,7 @@ namespace POWER_System.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
         public async Task<IActionResult> Edit(UserServiceModel model)
         {
             if (!ModelState.IsValid)
@@ -93,7 +97,7 @@ namespace POWER_System.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpGet]
+        [System.Web.Mvc.HttpGet]
         public async Task<IActionResult> AssignProjets(string id)
         {
             var model = userService.GetUserProjects(id);
@@ -101,7 +105,7 @@ namespace POWER_System.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public async Task<IActionResult> AssignProjets(string id, List<ProjectViewModel> model)
         {
             await userService.AssignProjectsToUser(id, model);
