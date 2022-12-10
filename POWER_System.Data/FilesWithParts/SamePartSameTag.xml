@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EplanLabelling version="1.0">
+	<Document source_id="1">
+		<Page source_id="1">
+			<Header/>
+			<ColumnHeader DataType="Text">
+				<PropertyName>DT (displayed)</PropertyName>
+			</ColumnHeader>
+			<ColumnHeader DataType="Text">
+				<PropertyName>Manufacturer</PropertyName>
+			</ColumnHeader>
+			<ColumnHeader DataType="Text">
+				<PropertyName>Part: Designation 1</PropertyName>
+			</ColumnHeader>
+			<ColumnHeader DataType="Text">
+				<PropertyName>Order number</PropertyName>
+			</ColumnHeader>
+			<ColumnHeader DataType="Number">
+				<PropertyName>Number of units / quantity</PropertyName>
+			</ColumnHeader>
+			<Line source_id="1" separator=";">
+				<Label source_id="1">
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>DT (displayed)</PropertyName>
+						<PropertyValue>-A01</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Manufacturer</PropertyName>
+						<PropertyValue>SIE</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Part: Designation 1</PropertyName>
+						<PropertyValue>ET 200MP, IM 155-5 PN ST</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Order number</PropertyName>
+						<PropertyValue>6ES7155-5AA01-0AB0</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Number of units / quantity</PropertyName>
+						<PropertyValue>1</PropertyValue>
+					</Property>
+				</Label>
+			</Line>
+			<Line source_id="2" separator=";">
+				<Label source_id="2">
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>DT (displayed)</PropertyName>
+						<PropertyValue>-A01</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Manufacturer</PropertyName>
+						<PropertyValue>SIE</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Part: Designation 1</PropertyName>
+						<PropertyValue>ET 200MP, IM 155-5 PN ST</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Order number</PropertyName>
+						<PropertyValue>6ES7155-5AA01-0AB0</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Number of units / quantity</PropertyName>
+						<PropertyValue>1</PropertyValue>
+					</Property>
+				</Label>
+			</Line>
+			<Line source_id="3" separator=";">
+				<Label source_id="3">
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>DT (displayed)</PropertyName>
+						<PropertyValue>-A01</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Manufacturer</PropertyName>
+						<PropertyValue>SIE</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Part: Designation 1</PropertyName>
+						<PropertyValue>ET 200MP, IM 155-5 PN ST</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Order number</PropertyName>
+						<PropertyValue>6ES7155-5AA01-0AB0</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Number of units / quantity</PropertyName>
+						<PropertyValue>1</PropertyValue>
+					</Property>
+				</Label>
+			</Line>
+			<Line source_id="4" separator=";">
+				<Label source_id="4">
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>DT (displayed)</PropertyName>
+						<PropertyValue>-A01</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Manufacturer</PropertyName>
+						<PropertyValue>SIE</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Part: Designation 1</PropertyName>
+						<PropertyValue>ET 200MP, IM 155-5 PN ST</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Order number</PropertyName>
+						<PropertyValue>6ES7155-5AA01-0AB0</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Number of units / quantity</PropertyName>
+						<PropertyValue>1</PropertyValue>
+					</Property>
+				</Label>
+			</Line>
+			<Line source_id="5" separator=";">
+				<Label source_id="5">
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>DT (displayed)</PropertyName>
+						<PropertyValue>-A01</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Manufacturer</PropertyName>
+						<PropertyValue>SIE</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Part: Designation 1</PropertyName>
+						<PropertyValue>ET 200MP, IM 155-5 PN ST</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Order number</PropertyName>
+						<PropertyValue>6ES7155-5AA01-0AB0</PropertyValue>
+					</Property>
+					<Property FormattingType="0" FormattingLength="32" FormattingRAlign="1">
+						<PropertyName>Number of units / quantity</PropertyName>
+						<PropertyValue>1</PropertyValue>
+					</Property>
+				</Label>
+			</Line>
+			<Footer/>
+		</Page>
+	</Document>
+</EplanLabelling>
