@@ -37,6 +37,7 @@ public class ProjectController : BaseController
         {
             return View(model);
         }
+
         try
         {
             await projectService.AddProjectAsync(model);

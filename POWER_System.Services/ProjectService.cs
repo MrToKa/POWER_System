@@ -22,8 +22,15 @@ public class ProjectService : IProjectService
 
     public async Task AddProjectAsync(ProjectServiceModel model)
     {
+        var projects = await repo.All<Project>().ToListAsync();
+
         ProjectStatus currentStatus;
         Enum.TryParse(model.Status, out currentStatus);
+
+        if (projects.Any(p => p.Number == model.Number))
+        {
+            throw new ArgumentException("Project with that name already exists.");
+        }
 
         var project = new Project()
         {
@@ -59,6 +66,11 @@ public class ProjectService : IProjectService
             .Include(e => e.Enclosures)
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync();
+
+        if (project == null)
+        {
+            throw new ArgumentException("Project does not exists.");
+        }
 
         var enclosures = await enclosureService.GetAllEnclosuresForProjectAsync(id);
         var orders = await GetAllOrdersForProjectsAsync(id);
