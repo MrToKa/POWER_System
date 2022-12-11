@@ -11,13 +11,15 @@ public class ProjectService : IProjectService
 {
     private readonly IApplicationDbRepository repo;
     private readonly IEnclosureService enclosureService;
+    private readonly IOrderService orderService;
 
     public ProjectService(IApplicationDbRepository _repo,
-        IEnclosureService _enclosureService
-        )
+        IEnclosureService _enclosureService,
+        IOrderService _orderService        )
     {
         repo = _repo;
         enclosureService = _enclosureService;
+        orderService = _orderService;
     }
 
     public async Task AddProjectAsync(ProjectServiceModel model)
@@ -73,7 +75,7 @@ public class ProjectService : IProjectService
         }
 
         var enclosures = await enclosureService.GetAllEnclosuresForProjectAsync(id);
-        var orders = await GetAllOrdersForProjectsAsync(id);
+        var orders = await orderService.GetAllOrdersForProjectsAsync(id);
 
         return new ProjectServiceModel()
         {
@@ -116,23 +118,5 @@ public class ProjectService : IProjectService
         }
 
         return projectCollection;
-    }
-
-    public async Task<IEnumerable<PartOrderServiceModel>> GetAllOrdersForProjectsAsync(Guid id)
-    {
-        return await repo.All<PartOrder>()            
-            .Where(x => x.Enclosure.ProjectId == id && x.IsDeleted == false)
-            .Select(p => new PartOrderServiceModel
-            {
-                Id = p.Id,
-                DateCreated = p.DateCreated,
-                Enclosure = p.Enclosure,
-                Comment = p.Comment,
-                EnclosureId = p.EnclosureId,              
-                OrderDate = p.OrderDate,
-                Status = p.Status,              
-            })
-            .OrderByDescending(d => d.DateCreated)
-            .ToListAsync();
     }
 }

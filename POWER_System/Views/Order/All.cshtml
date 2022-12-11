@@ -7,27 +7,43 @@
 <div class="text-center row">
     <table class="table-striped">
         <thead>
-        <tr>
-            <th scope="col">Order status</th>
-            <th scope="col">Order date</th>
-            <th scope="col">Comment</th>
-            <th scope="col">Details</th>
-        </tr>
+            <tr>
+                <th scope="col">Order Status</th>
+                <th scope="col">Order Created</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Comment</th>
+                <th scope="col">Project</th>
+                <th scope="col">Enclosure</th>
+                <th scope="col">Details</th>
+            </tr>
         </thead>
         @foreach (var order in Model)
         {
             <tbody>
-            <tr>
-                <td>@order.Status</td>
-                <td>@order.OrderDate</td>
-                <td>@order.Comment</td>
-                <td>
-                    <form>
-                        <button class="btn btn-success" asp-action="Details" asp-controller="Project" 
-                        asp-route-id="@order.Id" type="submit">Detailed information</button>
-                    </form>
-                </td>
-            </tr>
+                <tr>
+                    <td>@order.Status</td>
+                    <td>@order.DateCreated</td>
+                    <td>
+                        @if (@order.OrderDate < DateTime.Parse("2022/01/01"))
+                        {
+                        }
+                        else
+                        {
+                            @order.OrderDate
+                        }
+                    </td>
+                    <td>@order.Comment</td>
+                    <td>@order.Project.Number</td>
+                    <td>@order.Enclosure.Tag</td>
+                    <td>
+                        <form>
+                            <button class="btn btn-success" asp-action="Details" asp-controller="Order"
+                                asp-route-id="@order.EnclosureId" name="orderId" value="@order.Id" type="submit">
+                                Detailed information
+                            </button>
+                        </form>
+                    </td>
+                </tr>
             </tbody>
         }
     </table>

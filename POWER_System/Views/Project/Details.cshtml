@@ -35,8 +35,10 @@
         </div>
         <div class="col">
             <form>
-                <button class="btn btn-primary" asp-action="All" asp-controller="Order" 
-                asp-route-id="@Model.Id" type="submit">Modify Project orders</button><br />
+                <button class="btn btn-primary" asp-action="AllForProject" asp-controller="Order"
+                        asp-route-id="@Model.Id" value="@Model.Id" name="projectId" type="submit">
+                    Modify Project orders
+                </button><br />
             </form>
             Orders:
             <div class="list-group">

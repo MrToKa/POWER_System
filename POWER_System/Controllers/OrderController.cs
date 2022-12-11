@@ -25,9 +25,17 @@ namespace POWER_System.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> All(Guid id)
+        public async Task<IActionResult> All()
         {
-            var model = await projectService.GetAllOrdersForProjectsAsync(id);
+            var model = await orderService.GetAllOrders();
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AllForProject(Guid projectId)
+        {
+            var model = await orderService.GetAllOrdersForProjectsAsync(projectId);
+
             return View(model);
         }
 
@@ -75,14 +83,5 @@ namespace POWER_System.Controllers
 
             return View(model.ToList());
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> AddPartsToOrder(Guid id)
-        //{
-        //    var model = await enclosureService.EnclosureSummarizedDetails(id);
-        //    await orderService.CreatePartsOrder(model.Parts, id);
-
-        //    return View(model);
-        //}
     }
 }

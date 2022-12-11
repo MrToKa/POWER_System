@@ -30,7 +30,46 @@ public class OrderService : IOrderService
         };
 
         await repo.AddAsync(order);
-        await repo.SaveChangesAsync();        
+        await repo.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<PartOrderServiceModel>> GetAllOrders()
+    {
+        return await repo.All<PartOrder>()
+            .Where(o => o.IsDeleted == false)
+            .Select(p => new PartOrderServiceModel
+            {
+                Id = p.Id,
+                DateCreated = p.DateCreated,
+                Enclosure = p.Enclosure,
+                Comment = p.Comment,
+                EnclosureId = p.EnclosureId,
+                OrderDate = p.OrderDate,
+                Status = p.Status,
+                ProjectId = p.Enclosure.ProjectId,
+                Project = p.Enclosure.Project
+            })
+            .OrderByDescending(d => d.DateCreated)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<PartOrderServiceModel>> GetAllOrdersForProjectsAsync(Guid id)
+    {
+        return await repo.All<PartOrder>()
+            .Where(x => x.Enclosure.ProjectId == id && x.IsDeleted == false)
+            .Select(p => new PartOrderServiceModel
+            {
+                Id = p.Id,
+                DateCreated = p.DateCreated,
+                Enclosure = p.Enclosure,
+                Comment = p.Comment,
+                EnclosureId = p.EnclosureId,
+                OrderDate = p.OrderDate,
+                Status = p.Status,
+                ProjectId = p.Enclosure.ProjectId
+            })
+            .OrderByDescending(d => d.DateCreated)
+            .ToListAsync();
     }
 
     public async Task CreatePartsOrder(List<PartServiceModel> model, Guid enclosureId)
@@ -52,11 +91,11 @@ public class OrderService : IOrderService
 
                 enclosurePart.EnclosureParts.Add(new EnclosurePartOrder()
                 {
-                   EnclosurePartId = enclosurePart.Id,
-                   PartOrderId = orderId,
-                   Delivery = modelPart.Delivery,
-                   Quantity = enclosurePart.Quantity,                  
-                });          
+                    EnclosurePartId = enclosurePart.Id,
+                    PartOrderId = orderId,
+                    Delivery = modelPart.Delivery,
+                    Quantity = enclosurePart.Quantity,
+                });
             }
         }
 
@@ -68,11 +107,11 @@ public class OrderService : IOrderService
         var enclosureParts = await repo.All<EnclosurePart>()
             .Include(p => p.EnclosureParts)
             .Include(p => p.Part)
-            .ThenInclude(p => p.Parts)            
+            .ThenInclude(p => p.Parts)
             .Where(e => e.EnclosureId == enclosureId)
             .ToListAsync();
 
-        List <PartServiceModel> parts = new List<PartServiceModel>();
+        List<PartServiceModel> parts = new List<PartServiceModel>();
 
         foreach (var enclosurePart in enclosureParts)
         {

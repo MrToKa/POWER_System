@@ -1,0 +1,36 @@
+﻿@model IEnumerable<PartOrderServiceModel>
+
+@{
+    ViewBag.Title = "Parts orders";
+}
+
+<div class="text-center row">
+    <table class="table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Order status</th>
+            <th scope="col">Order date</th>
+            <th scope="col">Comment</th>
+            <th scope="col">Details</th>
+        </tr>
+        </thead>
+        @foreach (var order in Model)
+        {
+            <tbody>
+            <tr>
+                <td>@order.Status</td>
+                <td>@order.OrderDate</td>
+                <td>@order.Comment</td>
+                <td>
+                    <form>
+                        <button class="btn btn-success" asp-action="Details" asp-controller="Order"
+                                asp-route-id="@order.EnclosureId" name="orderId" value="@order.Id" type="submit">
+                                Detailed information
+                            </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        }
+    </table>
+</div>

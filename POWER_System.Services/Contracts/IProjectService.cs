@@ -12,5 +12,5 @@ public interface IProjectService
 
     Task<IEnumerable<ProjectServiceModel>> SearchProjectAsync(string keyword);
 
-    Task<IEnumerable<PartOrderServiceModel>> GetAllOrdersForProjectsAsync(Guid id);
+    //Task<IEnumerable<PartOrderServiceModel>> GetAllOrdersForProjectsAsync(Guid id);
 }
