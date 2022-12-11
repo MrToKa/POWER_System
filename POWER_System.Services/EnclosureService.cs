@@ -29,6 +29,11 @@ namespace POWER_System.Services
                 .Where(x => x.Id == model.ProjectId)
                .FirstOrDefaultAsync();
 
+            if (project.Enclosures.Any(n => n.Tag == model.Tag))
+            {
+                throw new ArgumentException("Enclosure with that Tag already exists.");
+            }
+
             var enclosure = new Enclosure()
             {
                 Plant = model.Plant,
@@ -61,7 +66,6 @@ namespace POWER_System.Services
                     ProjectId = p.ProjectId
                 }).ToListAsync();
         }
-
 
         public async Task<EnclosureServiceModel> EnclosureSummarizedDetails(Guid enclosureId)
         {
@@ -139,11 +143,11 @@ namespace POWER_System.Services
 
         public async Task <List<EnclosurePart>> ManagePartsForOrder(Guid enclosureId)
         {
-            var enclosure = await repo.All<Enclosure>()
-                .Include(p => p.Parts)
-                .FirstOrDefaultAsync(e => e.Id == enclosureId);
+            //var enclosure = await repo.All<Enclosure>()
+            //    .Include(p => p.Parts)
+            //    .FirstOrDefaultAsync(e => e.Id == enclosureId);
 
-            //var parts = 
+            ////var parts = 
 
             throw new NotImplementedException();
         }

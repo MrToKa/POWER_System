@@ -3,9 +3,7 @@ using POWER_System.Data.Repositories;
 using POWER_System.Models;
 using POWER_System.Services.Contracts;
 using POWER_System.Services.Models;
-using System.Security.Cryptography.X509Certificates;
 using static POWER_System.Models.Enum.OrderStatus;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace POWER_System.Services;
 
@@ -142,5 +140,4 @@ public class OrderService : IOrderService
 
         return parts.Where(q => q.Quantity > 0).ToList();
     }
-
 }

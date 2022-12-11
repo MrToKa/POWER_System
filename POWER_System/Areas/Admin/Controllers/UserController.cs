@@ -51,13 +51,13 @@ namespace POWER_System.Areas.Admin.Controllers
             };
 
             ViewBag.RoleItems = roleManager.Roles
-                            .ToList()
-                            .Select(r => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
-                            {
-                                Text = r.Name,
-                                Value = r.Name,
-                                Selected = userManager.IsInRoleAsync(user, r.Name).Result
-                            }).ToList();
+                .ToList()
+                .Select(r => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
+                {
+                    Text = r.Name,
+                    Value = r.Name,
+                    Selected = userManager.IsInRoleAsync(user, r.Name).Result
+                }).ToList();
 
             return View(model);
         }

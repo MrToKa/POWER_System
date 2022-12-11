@@ -1,16 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using POWER_System.Data.Repositories;
 using POWER_System.Models;
-using POWER_System.Models.Contracts;
 using POWER_System.Services;
 using POWER_System.Services.Contracts;
 using POWER_System.Services.Models;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace POWER_System.Tests.UsersAreaTests
 {
