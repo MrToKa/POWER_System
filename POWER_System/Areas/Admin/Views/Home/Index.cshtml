@@ -7,18 +7,28 @@
     <p class="lead mb-1 mt-3">
         This is your administrator area - you can <b>MANAGE</b> the Projects, the Orders, the Users and their access to the system.
     </p>
-   
+
     <hr class="my-4">
-    <a asp-area="" asp-controller="" asp-action=""
-       class="btn btn-primary btn-lg">All Houses</a>
-    <a asp-area="" asp-controller="" asp-action=""
-       class="btn btn-primary btn-lg">Add House</a>
-    <span>  |   </span>
-    <a asp-area="" asp-controller="" asp-action=""
-       class="btn btn-primary btn-lg">My Houses</a>
-    <span>  |   </span>
-    <a asp-area="" asp-controller="" asp-action=""
-       class="btn btn-primary btn-lg">All Rents</a>
-    <a asp-area="Admin" asp-controller="User" asp-action="ManageUsers"
-       class="btn btn-primary btn-lg">All Users</a>
+    <form>
+        <button type="submit" class="btn btn-primary btn-lg" asp-area="Admin" asp-controller="Role" asp-action="Index">
+            Manage Roles
+        </button>
+        <button type="submit" class="btn btn-primary btn-lg" asp-area="Admin" asp-controller="User" asp-action="ManageUsers">Manage Users</button>
+        <button type="submit" class="btn btn-primary btn-lg" asp-area="" asp-controller="" asp-action=""
+                disabled>
+            Manage Projects
+        </button>
+        <button type="submit" class="btn btn-primary btn-lg" asp-area="" asp-controller="" asp-action=""
+                disabled>
+            Manage Orders
+        </button>
+        <button type="submit" class="btn btn-primary btn-lg" asp-area="" asp-controller="" asp-action=""
+                disabled>
+            Manage Stores
+        </button>
+        <button type="submit" class="btn btn-primary btn-lg" asp-area="" asp-controller="" asp-action=""
+                disabled>
+            Manage Site Jobs
+        </button>
+    </form>
 </div>
