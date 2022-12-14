@@ -36,13 +36,11 @@ public class RegisterViewModel
 
     public string OfficeLocation { get; set; } = null!;
 
-    [Required]
     [Display(Name = "Department")]
 
-    public string Department { get; set; } = null!;
-
-    [Required]
+    public string? Department { get; set; }
+    
     [Display(Name = "Position")]
 
-    public string Position { get; set; } = null!;
+    public string? Position { get; set; }
 }

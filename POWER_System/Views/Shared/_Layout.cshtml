@@ -21,22 +21,28 @@
                     <li class="nav-item active">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Projects </a>
-                        <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Project" asp-action="All">All Projects</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Project" asp-action="Add">Add Projects</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <text aria-labelledby="navbarDropdownMenuLink"> Search for project by name </text>
-                            <form class="form-inline d-flex dropdown">
-                                <input class="form-control form-control-sm" type="text" placeholder="Search" name="keyword" data-toggle="collapse">
-                                <button class="btn btn-outline-success btn-sm" asp-area="" asp-controller="Project" asp-action="SearchResult" type="submit">Search</button>
-                            </form>
-                        </ul>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" asp-area="" asp-controller="Order" asp-action="All">Orders</a>
-                    </li>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Administrator") || User.IsInRole("Engineering"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Projects </a>
+                            <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Project" asp-action="All">All Projects</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Project" asp-action="Add">Add Projects</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <text aria-labelledby="navbarDropdownMenuLink"> Search for project by name </text>
+                                <form class="form-inline d-flex dropdown">
+                                    <input class="form-control form-control-sm" type="text" placeholder="Search" name="keyword" data-toggle="collapse">
+                                    <button class="btn btn-outline-success btn-sm" asp-area="" asp-controller="Project" asp-action="SearchResult" type="submit">Search</button>
+                                </form>
+                            </ul>
+                        </li>
+                    }
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Administrator") || User.IsInRole("Purcharse"))
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-area="" asp-controller="Order" asp-action="All">Orders</a>
+                        </li>
+                    }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Administrator"))
                     {
                         <li class="nav-item active">
