@@ -74,10 +74,26 @@ namespace POWER_System.Controllers
         [HttpPost]
         public async Task<IActionResult> AddParts(Guid id, IFormFile file)
         {
-            var model = await enclosureService.AddPartsToEnclosure(id, file);
-            await partService.AssignPartsToEnclosure(model.Parts, id);
+            if (!ModelState.IsValid || file == null || !file.FileName.EndsWith("xml"))
+            {
+                ModelState.AddModelError("", "Please select correct file to upload");
 
-            return RedirectToAction("EnclosureFullDetails", new { id = id });
+                return RedirectToAction("AddParts", id);
+            }
+
+            try
+            {
+                var model = await enclosureService.AddPartsToEnclosure(id, file);
+                await partService.AssignPartsToEnclosure(model.Parts, id);
+
+                return RedirectToAction("EnclosureFullDetails", new { id = id });
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Check data in the upload file");
+            }
+
+            return RedirectToAction("AddParts", id);
         }
 
     }
