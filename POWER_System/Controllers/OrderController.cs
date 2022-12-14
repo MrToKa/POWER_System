@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using POWER_System.Models;
-using POWER_System.Services;
 using POWER_System.Services.Contracts;
 using POWER_System.Services.Models;
 
@@ -8,19 +6,13 @@ namespace POWER_System.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly IProjectService projectService;
-        private readonly IEnclosureService enclosureService;
         private readonly IOrderService orderService;
         private readonly IPartService partService;
 
-        public OrderController(IProjectService _projectService,
-            IOrderService _orderService,
-            IEnclosureService _enclosureService,
+        public OrderController(IOrderService _orderService,
             IPartService _partService)
         {
-            projectService = _projectService;
             orderService = _orderService;
-            enclosureService = _enclosureService;
             partService = _partService;
         }
 
@@ -82,6 +74,14 @@ namespace POWER_System.Controllers
             var model = await orderService.GetOrderAsync(id, orderId);
 
             return View(model.ToList());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id, string orderId)
+        {
+            await orderService.DeletePartsOrderAsync(orderId);
+
+            return RedirectToAction("All", "Order", new { id = id});
         }
     }
 }

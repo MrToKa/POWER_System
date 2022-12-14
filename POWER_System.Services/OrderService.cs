@@ -10,13 +10,10 @@ namespace POWER_System.Services;
 public class OrderService : IOrderService
 {
     private readonly IApplicationDbRepository repo;
-    private readonly IPartService partService;
 
-    public OrderService(IApplicationDbRepository _repo,
-        IPartService _partService)
+    public OrderService(IApplicationDbRepository _repo)
     {
         repo = _repo;
-        partService = _partService;
     }
     public async Task AddOrderAsync(Guid enclosureId)
     {
@@ -139,5 +136,19 @@ public class OrderService : IOrderService
         }
 
         return parts.Where(q => q.Quantity > 0).ToList();
+    }
+
+    public async Task DeletePartsOrderAsync(string orderId)
+    {
+        var order = await repo.All<PartOrder>()
+            .FirstOrDefaultAsync(x => x.Id.ToString() == orderId);
+
+        if (order != null)
+        {
+            order.DeletedOn = DateTime.Now;
+            order.IsDeleted = true;
+
+            await repo.SaveChangesAsync();
+        }
     }
 }

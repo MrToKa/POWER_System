@@ -41,6 +41,12 @@
                                 asp-route-id="@order.EnclosureId" name="orderId" value="@order.Id" type="submit">
                                 Detailed information
                             </button>
+@*                        </form>
+                        <form>*@
+                            <button class="btn btn-danger" asp-action="Delete" asp-controller="Order"
+                                asp-route-id="@order.EnclosureId" name="orderId" value="@order.Id" type="submit">
+                                Delete Order
+                            </button>
                         </form>
                     </td>
                 </tr>
